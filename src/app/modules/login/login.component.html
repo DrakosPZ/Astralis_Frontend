@@ -1,0 +1,20 @@
+<h2>Astralis Login</h2>
+<div>
+    <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input type="text" [formControl]="username" required
+         matInput [(ngModel)]="usernameText">
+         <mat-error *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="password" [formControl]="password" required
+         matInput [(ngModel)]="passwordText">
+         <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+    </mat-form-field>
+  </div>
+
+<button [disabled]="!allFilled()" (click)="login()">
+    Login
+</button>
