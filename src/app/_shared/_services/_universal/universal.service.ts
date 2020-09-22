@@ -5,8 +5,11 @@ import { Observable, of } from 'rxjs';
 //ALL THE URLS USED TO COMMUNICATE WITH THE BACKEND
 const HTTP_URL ="http://";
 const START_URL = "localhost:8080";
+const IDENTIFIER_URL = "?identifier=";
 
 const USER_URL = "/user";
+const REGISTRATION_URL = "/registration";
+
 const USERNAME_URL = "?username=";
 const LOGIN = "/login";
 const LOGOUT = "/logout";
@@ -44,6 +47,33 @@ export class UniversalService {
    */
   protected userURL(): string{
     return HTTP_URL+START_URL+USER_URL;
+  }  
+  
+  /**
+   * Extends the user URL with the Get By Identifiert Part
+   * 
+   * @returns the UserAPIUrl + identifiert request param part.
+   */
+  protected userByIdentifierURL(): string{
+    return this.userURL()+IDENTIFIER_URL;
+  }
+
+  /**
+   * Extends the user URL with the delete by identifier part
+   * 
+   * @returns the UserAPIUrl + identifier request param part.
+   */
+  protected deleteUserURL(): string{
+    return this.userURL()+IDENTIFIER_URL;
+  }
+
+  /**
+   * Extends the user URL with the registration part
+   * 
+   * @returns the UserAPIUrl + registration request param part.
+   */
+  protected registerUserURL(): string{
+    return this.userURL()+REGISTRATION_URL;
   }
 
 

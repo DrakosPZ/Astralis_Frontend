@@ -1,0 +1,39 @@
+<h2>Astralis Registration</h2>
+
+<div>
+    <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input type="text" [formControl]="username" required cdkFocusInitial 
+        matInput [(ngModel)]="newUser.loginInformation.loginName">
+        <mat-error *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="text" [formControl]="password" required 
+        matInput [(ngModel)]="newUser.loginInformation.password">
+        <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Password repeat</mat-label>
+        <input type="text" [formControl]="passwordConfirmation" required
+        matInput>
+        <mat-error *ngIf="passwordConfirmation.invalid">{{getErrorMessagePasswordConfirmation()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Displayname</mat-label>
+        <input type="text" [formControl]="displayname" required 
+        matInput [(ngModel)]="newUser.nickName">
+        <mat-error *ngIf="displayname.invalid">{{getErrorMessageDisplayname()}}</mat-error>
+    </mat-form-field>
+</div>
+
+<button routerLink="/Login" mat-raised-button>
+    Back to Login
+</button>
+
+<button [disabled]="!allFilled()" (click)="register()" mat-raised-button>
+    Register
+</button>

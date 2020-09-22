@@ -73,7 +73,7 @@ export class LoginService extends UniversalService{
           //Storing loggedIn User and switching to Home Page
           this.setCurrentUser(element);
           console.log(element)
-          this.saveUsername(element.loginName);
+          this.saveUsername(element.loginInformation.loginName);
           this.router.navigate([this.redirectToUrl]);
         })
       });

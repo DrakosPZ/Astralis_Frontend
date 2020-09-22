@@ -15,6 +15,10 @@
     </mat-form-field>
   </div>
 
-<button [disabled]="!allFilled()" (click)="login()">
+<button routerLink="/Register" mat-raised-button>
+    Create new Account
+</button>
+
+<button [disabled]="!allFilled()" (click)="login()" mat-raised-button>
     Login
 </button>

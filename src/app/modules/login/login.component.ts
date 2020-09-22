@@ -19,12 +19,9 @@ export class LoginComponent implements OnInit {
   }
 
   allFilled(){
-    console.log(this.username)
-    console.log(this.password)
     if(this.username.hasError('required') || this.password.hasError('required')){
       return false;
     }
-    console.log(true)
     return true;
   }
   
