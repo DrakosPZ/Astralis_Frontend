@@ -1,0 +1,51 @@
+<mat-tab-group mat-align-tabs="center" 
+            (selectedTabChange)="checkForTab($event)">
+    <mat-tab label="Joined Games"> 
+        <ng-template matTabContent>
+            <div *ngFor="let game of joinedGames">
+                <div fxLayout="row" fxLayoutAlign="space-around center" > 
+                    <h3>{{game.name}}</h3>
+                </div>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Search for Games"> 
+        <ng-template matTabContent>
+            Content 2 
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Start Game"> 
+        <ng-template matTabContent>
+            <div>
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input type="text" [formControl]="gameName" required
+                        matInput [(ngModel)]="newGame.name">
+                    <mat-error *ngIf="gameName.invalid">
+                        {{getErrorMessageGameName()}}
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <input type="text" [formControl]="description" required
+                        matInput [(ngModel)]="newGame.description">
+                    <mat-error *ngIf="description.invalid">
+                        {{getErrorMessageDescription()}}
+                    </mat-error>
+                </mat-form-field>
+                
+                <button mat-raised-button (click)="prepNewGame()">
+                    Reset
+                </button>
+
+                <button mat-raised-button 
+                    [disabled]="!allFilled()" (click)="startNewGame()">
+                    Start
+                </button>
+
+              </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>
+  

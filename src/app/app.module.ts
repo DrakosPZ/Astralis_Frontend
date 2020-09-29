@@ -8,7 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtTokenInterceptor } from './_shared/_interceptors/JwtTokenInterceptor';
 import { ApiInterceptor } from './_shared/_interceptors/api-interceptor';
 import { AuthGuard } from './_shared/_navigation/guards/auth-guard.service';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { LoginComponent } from './modules/login/login.component';
 
 
@@ -56,16 +55,31 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { RegistrationComponent } from './modules/registration/registration.component';
 
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+
+import { RegistrationComponent } from './modules/registration/registration.component';
+import { HomeComponent } from './modules/home/home.component';
+import { HeaderComponent } from './_shared/_navigation/presentation/header/header.component';
+import { SidenavListComponent } from './_shared/_navigation/presentation/sidenav-list/sidenav-list.component';
+import { LogInSidenavListComponent } from './_shared/_navigation/play/log-in-sidenav-list/log-in-sidenav-list.component';
+import { LogInHeaderComponent } from './_shared/_navigation/play/log-in-header/log-in-header.component';
+import { GamesComponent } from './modules/games/games.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
     LoginComponent,
-    RegistrationComponent
-  ],
+    RegistrationComponent,
+    HomeComponent,
+    HeaderComponent,
+    SidenavListComponent,
+    LogInHeaderComponent,
+    LogInSidenavListComponent,
+    GamesComponent
+    ],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -123,9 +137,10 @@ import { RegistrationComponent } from './modules/registration/registration.compo
     MatTooltipModule,
     MatTreeModule,
     PortalModule,
-    ScrollingModule
+    ScrollingModule,
 
-
+    //Flexlayout
+    FlexLayoutModule
 
 
   ],

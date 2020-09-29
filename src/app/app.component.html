@@ -1,43 +1,13 @@
-<mat-sidenav-container class="app-content">
-  <mat-sidenav
-    *ngIf="isLoggedIn()"
-    #appSideNav
-    [mode]="viewportMobileQuery.matches ? 'over' : 'side'"
-    [opened]="!viewportMobileQuery.matches"
-    [fixedInViewport]="viewportMobileQuery.matches"
-  >
-    <mat-toolbar color="primary">
-      <mat-toolbar-row>
-        <h1>A-TeamManager</h1>
-        <span class="fill-space"></span>
-        <button mat-icon-button *ngIf="viewportMobileQuery.matches" (click)="appSideNav.close()">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-
-    <mat-nav-list *ngIf="isLoggedIn()">
-      <!-- set the `routerLink` on the `mat-list-item` that way it will route if any of the list item is clicked -->
-      <mat-list-item routerLink="/Login" *ngIf="!isLoggedIn()">
-        <mat-icon matListIcon>login</mat-icon>
-        <a matLine>Login</a>
-      </mat-list-item>
-      <mat-list-item (click)="logUserOut()" *ngIf="isLoggedIn()">
-        <mat-icon matListIcon>logout</mat-icon>
-        <a matLine>Logout</a>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item routerLink="/Dashboard">
-        <mat-icon matListIcon>home</mat-icon>
-        <a matLine>Home</a>
-      </mat-list-item>
-    </mat-nav-list>
+<mat-sidenav-container>  
+  <mat-sidenav #sidenav role="navigation">  
+    <app-log-in-sidenav-list *ngIf="isLoggedIn()" (logOut)="logUserOut()" (sidenavClose)="sidenav.close()"></app-log-in-sidenav-list>
+    <app-sidenav-list *ngIf="!isLoggedIn()" (sidenavClose)="sidenav.close()"></app-sidenav-list>
   </mat-sidenav>
-  <mat-sidenav-content class="main-content">
-    <main class="main-content-inner">
-      <section class="content-area" fxLayout="column" fxLayoutAlign="start stretch">
-        <router-outlet></router-outlet>
-      </section>
+  <mat-sidenav-content>
+    <app-log-in-header *ngIf="isLoggedIn()" (logOut)="logUserOut()" (sidenavToggle)="sidenav.toggle()"></app-log-in-header>
+    <app-header *ngIf="!isLoggedIn()" (sidenavToggle)="sidenav.toggle()"></app-header>
+    <main>
+      <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,51 +1,10 @@
-::ng-deep .surface{
-    background-color: #DBDDDD !important;
-}
-
-::ng-deep .mat-divider{
-    border-top-color: #333333 !important;
-}
-
-.app-content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100vw;
-    height: 100vh;
-}
-.app-content mat-sidenav {
-    width: 200px;
-}
-.app-content .main-content {
-      display: flex;
-      flex-direction: column;
-}
-.app-content .main-content .main-toolbar {
-    flex: 0 0 auto;
-    z-index: 999;
-}
-.main-content-inner {
-    flex: 1 1 auto;
-    position: relative; /* need this to position inner content */
-}
-
-.content-area {
-    /*height: calc(100vh - 30px);*/
-    height: 100vh;
-}
-
-::ng-deep .content-area app-calender{
+mat-sidenav-container, mat-sidenav-content, mat-sidenav {
     height: 100%;
-    display: flex;
+}
+mat-sidenav {
+    width: 250px;
+}
+main {
+    padding: 10px;
 }
 
-::ng-deep .content-area app-partner-view{
-    height: 100%;
-    display: flex;
-}
-
-::ng-deep .removeBorderRadius{
-    border-radius: 0px!important;
-}

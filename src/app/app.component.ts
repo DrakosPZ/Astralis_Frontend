@@ -14,12 +14,7 @@ export class AppComponent {
   private _viewportQueryListener: () => void;
 
   constructor(
-              private changeDetectionRef: ChangeDetectorRef, 
-              private media: MediaMatcher,
               private loginservice: LoginService) {
-    this.viewportMobileQuery = media.matchMedia('(max-width: 600px)');
-    this._viewportQueryListener = () => changeDetectionRef.detectChanges();
-    this.viewportMobileQuery.addEventListener('change', this._viewportQueryListener);
   }
 
   ngOnDestroy(): void {

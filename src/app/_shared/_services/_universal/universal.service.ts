@@ -15,6 +15,12 @@ const LOGIN = "/login";
 const LOGOUT = "/logout";
 const AFTER_LOGIN = "/afterLogin";
 
+const GAME_URL = "/gamestate";
+const JOINEDGAME_URL = "/joinedGame";
+const STARTGAME_URL = "/createNewGame";
+const JOINGAME_URL = "/addUser";
+const LEAVEGAME_URL = "/removeUser";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -119,6 +125,59 @@ export class UniversalService {
   protected userByUsernameURL(): string{
     return this.userURL()+USERNAME_URL;
   }
+
+
+
+
+
+
+
+  //-----------------------------------------User Related URLs
+   /**
+   * Gets the URL to the game API
+   * 
+   * @returns the GameAPIUrl string
+   */
+  protected gameURL(): string{
+    return HTTP_URL+START_URL+GAME_URL;
+  }  
+  
+   /**
+   * Gets the URL to the game API with the Joined Game Part and identifier param
+   * 
+   * @returns the GameAPIUrl + JoinedGames + identifier string
+   */
+  protected joinedGamesURL(): string{
+    return this.gameURL()+JOINEDGAME_URL+IDENTIFIER_URL;
+  }  
+  
+  /**
+  * Gets the URL to the game API with the create new Game Part
+  * 
+  * @returns the GameAPIUrl + StartNewGame string
+  */
+ protected startNewGameURL(): string{
+   return this.gameURL()+STARTGAME_URL;
+ }  
+  
+  
+  /**
+  * Gets the URL to the game API with the join Game Part
+  * 
+  * @returns the GameAPIUrl + JoinGame
+  */
+ protected joinGameURL(): string{
+   return this.gameURL()+JOINGAME_URL;
+ }  
+  
+ /**
+  * Gets the URL to the game API with the leave Game Part
+  * 
+  * @returns the GameAPIUrl + LeaveGame
+ */
+protected leaveGameURL(): string{
+  return this.gameURL()+LEAVEGAME_URL;
+}  
 
 
 

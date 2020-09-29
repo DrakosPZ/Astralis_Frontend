@@ -1,4 +1,5 @@
 import { LoginInformation } from './LoginInformation';
+import { UserGame } from './userGame';
 import { UserRole } from './userRole';
 
 export class User {
@@ -6,6 +7,7 @@ export class User {
     nickName: string;
     role: UserRole;
     loginInformation: LoginInformation
+    userGameStates: UserGame[];
 
     public constructor(init?:Partial<User>) {
         Object.assign(this, init);
