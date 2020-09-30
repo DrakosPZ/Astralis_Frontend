@@ -67,6 +67,7 @@ import { SidenavListComponent } from './_shared/_navigation/presentation/sidenav
 import { LogInSidenavListComponent } from './_shared/_navigation/play/log-in-sidenav-list/log-in-sidenav-list.component';
 import { LogInHeaderComponent } from './_shared/_navigation/play/log-in-header/log-in-header.component';
 import { GamesComponent } from './modules/games/games.component';
+import { GameInspectionComponent } from './modules/games/_modules/game-inspection/game-inspection.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { GamesComponent } from './modules/games/games.component';
     SidenavListComponent,
     LogInHeaderComponent,
     LogInSidenavListComponent,
-    GamesComponent
+    GamesComponent,
+    GameInspectionComponent
     ],
   imports: [
     HttpClientModule,

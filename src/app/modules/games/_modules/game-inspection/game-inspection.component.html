@@ -1,0 +1,53 @@
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Game Overview"> 
+        <ng-template matTabContent>
+            <div class="h-100 gi-content-box">
+                <h1>{{displayed.name}}</h1>
+                <img style="height: 100px; width: 100px; background-color: red;"/>
+                <h3>Description</h3>
+                <p>{{displayed.description}}</p>
+                <h3>Admin Team</h3>
+                <div *ngFor="let admins of displayed.userGameStates">
+                    <span>Name: {{admins.user.nickName}} Role: {{admins.gameRole}}</span>
+                </div>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Factions/Players"> 
+        <ng-template matTabContent>
+            <div class="h-100 gi-content-box"
+                 fxLayout="column" fxLayoutAlign="start stretch" > 
+                <div fxLayout="row" fxLayoutAlign="start center"> 
+                    <label>Players displayed by: </label>
+                    <mat-radio-group>
+                        <mat-radio-button value="1">Players</mat-radio-button>
+                        <mat-radio-button value="2">States</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div *ngFor="let player of displayed.userGameStates">
+                    <span>Name: {{player.user.nickName}} Role: {{player.gameRole}}</span>
+                </div>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="GameSet"> 
+        <ng-template matTabContent>
+            <div class="h-100 gi-content-box">
+                <p>LOTS OF STUFF I HAVEN'T THOUGHT ABOUT YET</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Map"> 
+        <ng-template matTabContent>
+            <div class="h-100 gi-content-box"
+                 fxLayout="column" fxLayoutAlign="start center" > 
+                <img style="height: 500px; width: 500px; background-color: darkblue;"/>
+                <div class="w-100"
+                     fxLayout="row" fxLayoutAlign="start start" >
+                    <p>Let's just say Maps for now</p>
+                </div>
+            </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>
+  

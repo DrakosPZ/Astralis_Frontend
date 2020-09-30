@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 const HTTP_URL ="http://";
 const START_URL = "localhost:8080";
 const IDENTIFIER_URL = "?identifier=";
+const NAME_URL = "?name=";
 
 const USER_URL = "/user";
 const REGISTRATION_URL = "/registration";
@@ -20,6 +21,8 @@ const JOINEDGAME_URL = "/joinedGame";
 const STARTGAME_URL = "/createNewGame";
 const JOINGAME_URL = "/addUser";
 const LEAVEGAME_URL = "/removeUser";
+const SEARCHFOR_URL = "/searchFor";
+const DETAILFOR_URL = "/detailsFor";
 
 @Injectable({
   providedIn: 'root'
@@ -177,6 +180,34 @@ export class UniversalService {
  */
 protected leaveGameURL(): string{
   return this.gameURL()+LEAVEGAME_URL;
+}  
+  
+  
+/**
+ * Gets the URL to the game API with the Search and Name Part
+ * 
+ * @returns the GameAPIUrl + SearchFor + ?Name
+*/
+protected searchForNameURL(): string{
+ return this.gameURL()+SEARCHFOR_URL+NAME_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Search and Identifier Part
+ * 
+ * @returns the GameAPIUrl + SearchFor + ?Identifier
+*/
+protected searchForIdentifierURL(): string{
+ return this.gameURL()+SEARCHFOR_URL+IDENTIFIER_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Detail Search and Identifier Part
+ * 
+ * @returns the GameAPIUrl + DetailFor + ?Identifier
+*/
+protected searchForDetailIdentifier(): string{
+ return this.gameURL()+DETAILFOR_URL+IDENTIFIER_URL;
 }  
 
 

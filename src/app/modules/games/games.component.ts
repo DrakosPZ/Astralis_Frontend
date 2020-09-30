@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { Game } from 'src/app/_shared/_models/game';
 import { User } from 'src/app/_shared/_models/user';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
@@ -17,11 +18,15 @@ export class GamesComponent implements OnInit {
 
   //--------------------JoinedGame Tab
   joinedGames: Game[];
+  inspectedGame: GameDetail;
 
 
 
 
   //--------------------SearchedGame Tab
+  searchedGames: Game[];
+  searchInspectedGame: GameDetail;
+  searchInput: String;
 
 
 
@@ -38,6 +43,7 @@ export class GamesComponent implements OnInit {
               private loginService: LoginService) {
     this.getCurrentUser();
     this.newGame = new Game();
+    this.searchInput = "";
    }
 
   ngOnInit(): void {
@@ -86,6 +92,18 @@ export class GamesComponent implements OnInit {
   callForJoinedGames(){
     this.getJoinedGames(this.currentUser.identifier)
   }
+
+  inspectGame(clickedGame: Game){
+    this.getDetailGame(clickedGame.identifier, true)
+  }
+
+  inspectSearchedGame(clickedGame: Game){
+    this.getDetailGame(clickedGame.identifier, false)
+  }
+
+  search(){
+    this.getSearchedGamesName(this.searchInput);
+  }
   
   prepNewGame(){
     this.newGame = new Game();
@@ -124,8 +142,30 @@ export class GamesComponent implements OnInit {
   getJoinedGames(uIdentifier: string){
     this.gameService.getJoinedGames(uIdentifier)
           .pipe(first()).subscribe(games =>  {
-            console.log(games);
             this.joinedGames = games});
+  }
+
+  getDetailGame(clickedGameIdentifier: string, inspect: boolean){
+    this.gameService.getDetailGame(clickedGameIdentifier)
+          .pipe(first()).subscribe(game =>  {
+            if(inspect){
+              this.inspectedGame = game;
+            } else {
+              this.searchInspectedGame = game;
+            }
+          });
+  }
+
+  getSearchedGamesName(name: String){
+    this.gameService.getSearchName(name.toString())
+          .pipe(first()).subscribe(games =>  {
+            this.searchedGames = games});
+  }
+
+  getSearchedGamesIdentifier(identifier: String){
+    this.gameService.getSearchIdentifier(identifier.toString())
+          .pipe(first()).subscribe(games =>  {
+            this.searchedGames = games});
   }
 
   postNewGame(newGame: Game){

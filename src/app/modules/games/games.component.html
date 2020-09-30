@@ -2,21 +2,48 @@
             (selectedTabChange)="checkForTab($event)">
     <mat-tab label="Joined Games"> 
         <ng-template matTabContent>
-            <div *ngFor="let game of joinedGames">
-                <div fxLayout="row" fxLayoutAlign="space-around center" > 
-                    <h3>{{game.name}}</h3>
+            <div class="fill-window-child">
+                <div fxFill fxLayout="row" fxLayoutAlign="start start" > 
+                    <div fxFlex class="h-100">
+                        <div *ngFor="let game of joinedGames">
+                            <button mat-button class="w-100"
+                                fxLayout="row" fxLayoutAlign="space-around center" 
+                                (click)="inspectGame(game)"> 
+                                <h3>{{game.name}}</h3>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="inspectedGame" fxFlex="40" class="h-100">
+                        <app-game-inspection [displayed]="inspectedGame"
+                            class="h-100 w-100 d-flex-inline-block"></app-game-inspection>
+                    </div>
                 </div>
             </div>
         </ng-template>
     </mat-tab>
     <mat-tab label="Search for Games"> 
         <ng-template matTabContent>
-            Content 2 
+            <div class="searchGames">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input type="text" matInput 
+                     [(ngModel)]="searchInput">
+                </mat-form-field>
+                <button mat-raised-button (click)="search()">
+                    Start
+                </button>
+    
+                <div *ngFor="let game of searchedGames">
+                    <div fxLayout="row" fxLayoutAlign="space-around center" > 
+                        <h3>{{game.name}}</h3>
+                    </div>
+                </div>
+            </div>
         </ng-template>
     </mat-tab>
     <mat-tab label="Start Game"> 
-        <ng-template matTabContent>
-            <div>
+        <ng-template matTabContent class="startGames">
+            <div class="startGames">
                 <mat-form-field>
                     <mat-label>Name</mat-label>
                     <input type="text" [formControl]="gameName" required

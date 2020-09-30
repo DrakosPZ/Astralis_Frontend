@@ -1,13 +1,4 @@
-.joinedGames{
-    background-color: aqua;
-}
-.searchGames{
-    background-color: red;
-}
-.startGames{
-    background-color: green;
-}
-//Make Tabs grow to end of window
+/*Tabs ill the entire possible space*/
 mat-tab-group{
     flex: 1 0 auto;
     display: flex;
@@ -30,4 +21,16 @@ mat-tab-group{
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
+}
+
+.gi-content-box{
+    padding: 5%;
+}
+
+.gi-content-box label{
+    padding-right: 15px;
+}
+
+.gi-content-box mat-radio-button{
+    padding-right: 10px;
 }
