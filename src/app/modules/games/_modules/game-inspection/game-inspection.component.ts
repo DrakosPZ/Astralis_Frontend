@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Game } from 'src/app/_shared/_models/game';
+import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
+import { GameRole } from 'src/app/_shared/_models/gameRole';
+import { UserGameDetail } from 'src/app/_shared/_models/details/userGameDetail';
 
 @Component({
   selector: 'app-game-inspection',
@@ -8,11 +10,26 @@ import { Game } from 'src/app/_shared/_models/game';
 })
 export class GameInspectionComponent implements OnInit {
 
-  @Input() displayed: Game;
+  @Input() displayed: GameDetail;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+
+
+
+
+  //--------------------Caller Method
+  getAdmins(): UserGameDetail[]{
+    let newList = new Array(); 
+    this.displayed.userGameStates.forEach(element => {
+      if(element.gameRole != GameRole.PLAYER){
+        newList.push(new UserGameDetail(element));
+      }
+    });
+    return newList;
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
-import { Game } from 'src/app/_shared/_models/game';
+import { findInArray, Game } from 'src/app/_shared/_models/game';
 import { User } from 'src/app/_shared/_models/user';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LoginService } from 'src/app/_shared/_services/login/login.service';
@@ -17,14 +17,14 @@ export class GamesComponent implements OnInit {
   currentUser: User;
 
   //--------------------JoinedGame Tab
-  joinedGames: Game[];
+  joinedGames: Game[] = new Array();
   inspectedGame: GameDetail;
 
 
 
 
   //--------------------SearchedGame Tab
-  searchedGames: Game[];
+  searchedGames: Game[] = new Array()
   searchInspectedGame: GameDetail;
   searchInput: String;
 
@@ -33,8 +33,6 @@ export class GamesComponent implements OnInit {
 
   //--------------------NewGame Tab
   newGame: Game;
-  public gameName = new FormControl('', [Validators.required]);
-  public description = new FormControl('', [Validators.required]);
 
 
 
@@ -63,6 +61,27 @@ export class GamesComponent implements OnInit {
       });
   }
 
+  replaceGameInArrays(newer: Game){
+    if(this.joinedGames){
+      let index = findInArray(newer, this.joinedGames);
+      this.joinedGames.splice(index, 1, newer);
+    }
+    if(this.searchedGames){
+      let index = findInArray(newer, this.searchedGames);
+      this.searchedGames.splice(index, 1, newer);
+    }
+  }
+
+  reloadArrays(inspect: boolean){
+    if(inspect){
+      this.callForJoinedGames();
+      this.inspectedGame = null;
+    } else {
+      this.search();
+      this.searchInspectedGame = null;
+    }
+  }
+
 
 
 
@@ -76,7 +95,7 @@ export class GamesComponent implements OnInit {
         this.callForJoinedGames();
         break;
       case 1:
-        
+        this.getSearchedGamesName(this.searchInput);
         break;
       case 2:
         this.prepNewGame();
@@ -104,6 +123,26 @@ export class GamesComponent implements OnInit {
   search(){
     this.getSearchedGamesName(this.searchInput);
   }
+
+  userInGame(pickedGame: Game): boolean{
+    let inGame = false;
+    pickedGame.userGameStates.forEach(
+      connection => {
+        if(connection.user === this.currentUser.identifier){
+          inGame = true;
+        }
+      }
+    )
+    return inGame;
+  }
+  
+  callJoinGame(clickedGame: Game, inspect: boolean){
+    this.joinGame(clickedGame.identifier, this.currentUser.identifier, inspect);
+  }
+  
+  callLeaveGame(clickedGame: Game, inspect: boolean){
+    this.leaveGame(clickedGame.identifier, this.currentUser.identifier, inspect);
+  }
   
   prepNewGame(){
     this.newGame = new Game();
@@ -111,26 +150,6 @@ export class GamesComponent implements OnInit {
   
   startNewGame(){
     this.postNewGame(this.newGame);
-  }
-
-  allFilled(){
-    if(this.gameName.hasError('required') || 
-       this.description.hasError('required')){
-      return false;
-    }
-    return true;
-  }
-  
-  getErrorMessageGameName() {
-    if (this.gameName.hasError('required')) {
-      return 'You must enter a value';
-    }
-  }
-  
-  getErrorMessageDescription() {
-    if (this.description.hasError('required')) {
-      return 'You must enter a value';
-    }
   }
 
 
@@ -142,12 +161,19 @@ export class GamesComponent implements OnInit {
   getJoinedGames(uIdentifier: string){
     this.gameService.getJoinedGames(uIdentifier)
           .pipe(first()).subscribe(games =>  {
-            this.joinedGames = games});
+            if(!games){
+              games = new Array;
+            }
+            this.joinedGames = games;
+          });
   }
 
   getDetailGame(clickedGameIdentifier: string, inspect: boolean){
     this.gameService.getDetailGame(clickedGameIdentifier)
           .pipe(first()).subscribe(game =>  {
+            if(!game){
+              game = new GameDetail();
+            }
             if(inspect){
               this.inspectedGame = game;
             } else {
@@ -159,13 +185,47 @@ export class GamesComponent implements OnInit {
   getSearchedGamesName(name: String){
     this.gameService.getSearchName(name.toString())
           .pipe(first()).subscribe(games =>  {
-            this.searchedGames = games});
+            if(!games){
+              games = new Array;
+            }
+            this.searchedGames = games;
+          });
   }
 
   getSearchedGamesIdentifier(identifier: String){
     this.gameService.getSearchIdentifier(identifier.toString())
           .pipe(first()).subscribe(games =>  {
-            this.searchedGames = games});
+            if(!games){
+              games = new Array;
+            }
+            this.searchedGames = games;
+          });
+  }
+
+  joinGame(identifierG: String, identifierU: String, inspect: boolean){
+    this.gameService.postJoinGame(identifierG.toString(), 
+                                  identifierU.toString())
+          .pipe(first()).subscribe(game =>  {
+              if(game.identifier == ""){
+                this.reloadArrays(inspect);
+              } else {
+                this.replaceGameInArrays(game);
+                this.getDetailGame(game.identifier, inspect);
+              }
+            });
+  }
+
+  leaveGame(identifierG: String, identifierU: String, inspect: boolean){
+    this.gameService.postLeaveGame(identifierG.toString(), 
+                                   identifierU.toString())
+          .pipe(first()).subscribe(game =>  {
+            if(game.identifier == ""){
+              this.reloadArrays(inspect);
+            } else {
+              this.replaceGameInArrays(game);
+              this.getDetailGame(game.identifier, inspect);
+            }
+          });
   }
 
   postNewGame(newGame: Game){

@@ -11,3 +11,13 @@ export class Game {
         Object.assign(this, init);
     }
 }
+
+export function findInArray(find: Game, inArray: Game[]): number{
+    let index = -1;
+    inArray.forEach(game => {
+        if(index != -1 && game.identifier === find.identifier){
+            index = inArray.indexOf(game);
+        }
+    });
+    return index;
+}

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { GameUserIDSet } from '../../_models/dataHolders/GameUserIDSet';
 import { Game } from '../../_models/game';
 import { UniversalService } from '../_universal/universal.service';
-import { tap, map, filter, catchError, mergeMap } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 import { GameDetail } from '../../_models/details/gameDetail';
 
 @Injectable({
@@ -66,6 +66,30 @@ export class GameService extends UniversalService{
     );
   }
 
+  postJoinGame(identifierG: string, identifierU: string): Observable<Game>{
+    const body = {};
+      body[identifierG] = identifierU;
+
+      return this.http.post<Game>(this.joinGameURL(), body, this.httpOptions).pipe(
+        tap((gotGames: Game) => this.log(`returned Game: w/ ${gotGames}`)),
+        catchError(this.handleError<Game>('joinGame'))
+      );
+  }
+
+  postLeaveGame(identifierG: string, identifierU: string): Observable<Game>{
+    const body = {};
+      body[identifierG] = identifierU;
+
+      console.log("Leave Game");
+      console.log(body);
+      return this.http.post<Game>(this.leaveGameURL(), body, this.httpOptions).pipe(
+        tap((gotGames: Game) => this.log(`returned Game: w/ ${gotGames}`)),
+        catchError(this.handleError<Game>('leaveGame'))
+      );
+  }
+
+
+
   startGame(game: Game, identifier: string): Observable<Game[]>{
     const body = 
       new GameUserIDSet({gameState: game, userIdentifier: identifier});
@@ -75,8 +99,5 @@ export class GameService extends UniversalService{
       catchError(this.handleError<Game[]>('startGame'))
     );
   }
-
-  /*searchForGame(): Observable<Game[]>{
-
-  }*/
+  
 }

@@ -6,10 +6,21 @@
                 <div fxFill fxLayout="row" fxLayoutAlign="start start" > 
                     <div fxFlex class="h-100">
                         <div *ngFor="let game of joinedGames">
-                            <button mat-button class="w-100"
-                                fxLayout="row" fxLayoutAlign="space-around center" 
+                            <button mat-button class="w-100" 
                                 (click)="inspectGame(game)"> 
-                                <h3>{{game.name}}</h3>
+                                <div fxLayout="row" fxLayoutAlign="space-around center">
+                                    <h3>{{game.name}}</h3>
+                                    <div fxFlex="20">
+                                        <button *ngIf="!userInGame(game)" mat-raised-button
+                                            (click)="callJoinGame(game, true)"> 
+                                            <h3>Join Game</h3>
+                                        </button>
+                                        <button *ngIf="userInGame(game)" mat-raised-button
+                                            (click)="callLeaveGame(game, true)"> 
+                                            <h3>Leave Game</h3>
+                                        </button>
+                                    </div>
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -23,55 +34,50 @@
     </mat-tab>
     <mat-tab label="Search for Games"> 
         <ng-template matTabContent>
-            <div class="searchGames">
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input type="text" matInput 
-                     [(ngModel)]="searchInput">
-                </mat-form-field>
-                <button mat-raised-button (click)="search()">
-                    Start
-                </button>
-    
-                <div *ngFor="let game of searchedGames">
-                    <div fxLayout="row" fxLayoutAlign="space-around center" > 
-                        <h3>{{game.name}}</h3>
+            <div fxLayout="column" fxLayoutAlign="start start"  class="h-100">
+                <div fxLayout="row" fxLayoutAlign="center start" class="w-100"> 
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input type="text" matInput 
+                        [(ngModel)]="searchInput">
+                    </mat-form-field>
+                    <button mat-raised-button (click)="search()">
+                        Start
+                    </button>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center start" fxFill fxFlex class="w-100"> 
+                    <div fxFlex class="h-100">
+                        <div *ngFor="let game of searchedGames">
+                            <button mat-button class="w-100" 
+                                (click)="inspectSearchedGame(game)"> 
+                                <div fxLayout="row" fxLayoutAlign="space-around center">
+                                    <h3>{{game.name}}</h3>
+                                    <div fxFlex="20">
+                                        <button *ngIf="!userInGame(game)" mat-raised-button
+                                            (click)="callJoinGame(game, false)"> 
+                                            <h3>Join Game</h3>
+                                        </button>
+                                        <button *ngIf="userInGame(game)" mat-raised-button
+                                            (click)="callLeaveGame(game, false)"> 
+                                            <h3>Leave Game</h3>
+                                        </button>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="searchInspectedGame" fxFlex="40" class="h-100">
+                        <app-game-inspection [displayed]="searchInspectedGame"
+                            class="h-100 w-100 d-flex-inline-block"></app-game-inspection>
                     </div>
                 </div>
             </div>
         </ng-template>
     </mat-tab>
     <mat-tab label="Start Game"> 
-        <ng-template matTabContent class="startGames">
-            <div class="startGames">
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input type="text" [formControl]="gameName" required
-                        matInput [(ngModel)]="newGame.name">
-                    <mat-error *ngIf="gameName.invalid">
-                        {{getErrorMessageGameName()}}
-                    </mat-error>
-                </mat-form-field>
-                
-                <mat-form-field>
-                    <mat-label>Description</mat-label>
-                    <input type="text" [formControl]="description" required
-                        matInput [(ngModel)]="newGame.description">
-                    <mat-error *ngIf="description.invalid">
-                        {{getErrorMessageDescription()}}
-                    </mat-error>
-                </mat-form-field>
-                
-                <button mat-raised-button (click)="prepNewGame()">
-                    Reset
-                </button>
-
-                <button mat-raised-button 
-                    [disabled]="!allFilled()" (click)="startNewGame()">
-                    Start
-                </button>
-
-              </div>
+        <ng-template matTabContent>
+            <app-game-edit [newGame]="newGame"
+                class="h-100 w-100 d-flex-inline-block"></app-game-edit>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

@@ -7,7 +7,7 @@
                 <h3>Description</h3>
                 <p>{{displayed.description}}</p>
                 <h3>Admin Team</h3>
-                <div *ngFor="let admins of displayed.userGameStates">
+                <div *ngFor="let admins of getAdmins()">
                     <span>Name: {{admins.user.nickName}} Role: {{admins.gameRole}}</span>
                 </div>
             </div>
@@ -16,7 +16,7 @@
     <mat-tab label="Factions/Players"> 
         <ng-template matTabContent>
             <div class="h-100 gi-content-box"
-                 fxLayout="column" fxLayoutAlign="start stretch" > 
+                 fxLayout="column" fxLayoutAlign="start stretch"> 
                 <div fxLayout="row" fxLayoutAlign="start center"> 
                     <label>Players displayed by: </label>
                     <mat-radio-group>

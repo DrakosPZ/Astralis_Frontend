@@ -1,0 +1,33 @@
+<div fxLayout="column" fxLayoutAlign="start stretch" fxFill> 
+    <div fxLayout="row" fxLayoutAlign="start start" > 
+    
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input type="text" [formControl]="gameName" required
+                matInput [(ngModel)]="newGame.name">
+            <mat-error *ngIf="gameName.invalid">
+                {{getErrorMessageGameName()}}
+            </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input type="text" [formControl]="description" required
+                matInput [(ngModel)]="newGame.description">
+            <mat-error *ngIf="description.invalid">
+                {{getErrorMessageDescription()}}
+            </mat-error>
+        </mat-form-field>
+        
+        <button mat-raised-button (click)="prepNewGame()">
+            Reset
+        </button>
+        
+        <button mat-raised-button 
+            [disabled]="!allFilled()" (click)="startNewGame()">
+            Start
+        </button>
+
+    </div>
+
+</div>

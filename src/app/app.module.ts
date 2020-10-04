@@ -68,6 +68,7 @@ import { LogInSidenavListComponent } from './_shared/_navigation/play/log-in-sid
 import { LogInHeaderComponent } from './_shared/_navigation/play/log-in-header/log-in-header.component';
 import { GamesComponent } from './modules/games/games.component';
 import { GameInspectionComponent } from './modules/games/_modules/game-inspection/game-inspection.component';
+import { GameEditComponent } from './modules/games/_modules/game-edit/game-edit.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { GameInspectionComponent } from './modules/games/_modules/game-inspectio
     LogInHeaderComponent,
     LogInSidenavListComponent,
     GamesComponent,
-    GameInspectionComponent
+    GameInspectionComponent,
+    GameEditComponent
     ],
   imports: [
     HttpClientModule,
