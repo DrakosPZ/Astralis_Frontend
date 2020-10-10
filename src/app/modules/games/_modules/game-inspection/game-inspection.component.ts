@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { GameRole } from 'src/app/_shared/_models/gameRole';
 import { UserGameDetail } from 'src/app/_shared/_models/details/userGameDetail';
+import { User } from 'src/app/_shared/_models/user';
 
 @Component({
   selector: 'app-game-inspection',
@@ -11,6 +12,8 @@ import { UserGameDetail } from 'src/app/_shared/_models/details/userGameDetail';
 export class GameInspectionComponent implements OnInit {
 
   @Input() displayed: GameDetail;
+  @Input() currentUser: User;
+  @Output() gameSend = new EventEmitter();
 
   constructor() { }
 
@@ -31,5 +34,58 @@ export class GameInspectionComponent implements OnInit {
     });
     return newList;
   }
+
+  checkIfAlreadyIn(): boolean{
+    let inGame = false;
+    this.displayed.userGameStates.forEach(
+      connection => {
+        if(connection.user.identifier !== this.currentUser.identifier){
+          inGame = true;
+        }
+      }
+    )
+
+    return true;
+  }
+
+  userInGame(): boolean{
+    let inGame = false;
+    this.displayed.userGameStates.forEach(
+      connection => {
+        if(connection.user.identifier === this.currentUser.identifier){
+          inGame = true;
+        }
+      }
+    )
+    return inGame;
+  }
+
+  callLoadGame(){
+    this.gameSend.emit("load");
+  }
+
+  callCreateCountry(){
+
+  }
+  
+  callJoinCountry(){
+
+  }
+  
+  callJoinGame(){
+    this.gameSend.emit("join");
+  }
+  
+  callLeaveGame(){
+    this.gameSend.emit("leave");
+  }
+
+
+
+
+
+  
+
+  //--------------------Service Methods
 
 }

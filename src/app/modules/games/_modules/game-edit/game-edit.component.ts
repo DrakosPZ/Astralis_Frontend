@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Game } from 'src/app/_shared/_models/game';
+import { GameService } from 'src/app/_shared/_services/game/game.service';
 
 @Component({
   selector: 'app-game-edit',
@@ -9,14 +10,20 @@ import { Game } from 'src/app/_shared/_models/game';
 })
 export class GameEditComponent implements OnInit {
   @Input() newGame: Game;
+  @Output() gameSend: EventEmitter<String> = new EventEmitter();
   public gameName = new FormControl('', [Validators.required]);
   public description = new FormControl('', [Validators.required]);
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
   }
+  //--------------------Data Setup
 
+
+
+
+  //--------------------Caller Method
   allFilled(){
     if(this.gameName.hasError('required') || 
        this.description.hasError('required')){
@@ -36,5 +43,25 @@ export class GameEditComponent implements OnInit {
       return 'You must enter a value';
     }
   }
+
+
+
+
+
+  //--------------------Caller Method
+  prepNewGame(){
+    this.gameSend.emit("resetGame");
+  }
+  
+  startNewGame(){
+    this.gameSend.emit("createGame");
+  }
+
+
+
+
+  
+
+  //--------------------Service Methods
 
 }

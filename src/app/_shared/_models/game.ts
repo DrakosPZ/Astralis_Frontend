@@ -1,3 +1,4 @@
+import { GameDetail } from './details/gameDetail';
 import { UserGame } from './userGame';
 
 export class Game {
@@ -10,6 +11,15 @@ export class Game {
     public constructor(init?:Partial<Game>) {
         Object.assign(this, init);
     }
+}
+
+export function turnDetailIntoSimple(detail: GameDetail): Game{
+    return new Game({
+        identifier: detail.identifier,
+        name: detail.name,
+        description: detail.description,
+        image: detail.image
+    });
 }
 
 export function findInArray(find: Game, inArray: Game[]): number{

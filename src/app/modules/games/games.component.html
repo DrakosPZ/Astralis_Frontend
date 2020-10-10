@@ -25,7 +25,8 @@
                         </div>
                     </div>
                     <div *ngIf="inspectedGame" fxFlex="40" class="h-100">
-                        <app-game-inspection [displayed]="inspectedGame"
+                        <app-game-inspection [displayed]="inspectedGame" [currentUser]="currentUser"
+                            (gameSend)="calledByDetailScreen($event, true)"
                             class="h-100 w-100 d-flex-inline-block"></app-game-inspection>
                     </div>
                 </div>
@@ -67,7 +68,8 @@
                         </div>
                     </div>
                     <div *ngIf="searchInspectedGame" fxFlex="40" class="h-100">
-                        <app-game-inspection [displayed]="searchInspectedGame"
+                        <app-game-inspection [displayed]="searchInspectedGame" [currentUser]="currentUser"
+                            (gameSend)="calledByDetailScreen($event, false)"
                             class="h-100 w-100 d-flex-inline-block"></app-game-inspection>
                     </div>
                 </div>
@@ -76,7 +78,7 @@
     </mat-tab>
     <mat-tab label="Start Game"> 
         <ng-template matTabContent>
-            <app-game-edit [newGame]="newGame"
+            <app-game-edit [newGame]="newGame" (gameSend)="calledByEditScreen($event)"
                 class="h-100 w-100 d-flex-inline-block"></app-game-edit>
         </ng-template>
     </mat-tab>

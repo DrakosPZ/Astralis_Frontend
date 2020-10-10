@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { PopoutService } from 'src/app/gameWindow/_services/PopoutService/popout.service';
+import { POPOUT_MODALS } from 'src/app/gameWindow/_services/PopoutService/popout.tokens';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
-import { findInArray, Game } from 'src/app/_shared/_models/game';
+import { findInArray, Game, turnDetailIntoSimple } from 'src/app/_shared/_models/game';
 import { User } from 'src/app/_shared/_models/user';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LoginService } from 'src/app/_shared/_services/login/login.service';
@@ -38,7 +39,8 @@ export class GamesComponent implements OnInit {
 
   
   constructor(private gameService: GameService,
-              private loginService: LoginService) {
+              private loginService: LoginService,
+              private popOutService: PopoutService) {
     this.getCurrentUser();
     this.newGame = new Game();
     this.searchInput = "";
@@ -88,7 +90,6 @@ export class GamesComponent implements OnInit {
 
 
   //--------------------Mat Tab Method
-  
   checkForTab(event){
     switch (event.index) {
       case 0:
@@ -143,7 +144,39 @@ export class GamesComponent implements OnInit {
   callLeaveGame(clickedGame: Game, inspect: boolean){
     this.leaveGame(clickedGame.identifier, this.currentUser.identifier, inspect);
   }
-  
+
+  calledByEditScreen(text: String){
+    switch (text) {
+      case "resetGame":
+        this.prepNewGame();
+        break;
+      case "createGame":
+        this.startNewGame();
+        break;
+    }
+  }
+
+  calledByDetailScreen(text: String, inspect: boolean){
+    let useddetailGame: Game;
+    if(inspect){
+      useddetailGame = turnDetailIntoSimple(this.inspectedGame);
+    } else {
+      useddetailGame = turnDetailIntoSimple(this.searchInspectedGame);
+    }
+
+    switch (text) {
+      case "join":
+        this.callJoinGame(useddetailGame, inspect);
+        break;
+      case "leave":
+        this.callLeaveGame(useddetailGame, inspect);
+        break;
+      case "load":
+        this.openGamePopout(useddetailGame);
+        break;
+    }
+  }
+
   prepNewGame(){
     this.newGame = new Game();
   }
@@ -151,6 +184,35 @@ export class GamesComponent implements OnInit {
   startNewGame(){
     this.postNewGame(this.newGame);
   }
+
+
+  @HostListener('window:beforeunload', ['$event'])
+  onWindowClose(event: Event) {
+    this.popOutService.closePopoutModal();
+  }
+
+  openGamePopout(game: Game) {
+    const modalData = {
+      id: game.identifier,
+      name: game.name
+    };
+    if (!this.popOutService.isPopoutWindowOpen()) {
+      this.popOutService.openPopoutModal(modalData);
+    } else {
+      const sameCustomer = POPOUT_MODALS['componentInstance'].name === name;
+      // When popout modal is open and there is no change in data, focus on popout modal
+      if (sameCustomer) {
+        this.popOutService.focusPopoutWindow();
+      } else {
+        POPOUT_MODALS['outlet'].detach();
+        const injector = this.popOutService.createInjector(modalData);
+        const componentInstance = this.popOutService.attachScreenContainer(POPOUT_MODALS['outlet'], injector);
+        POPOUT_MODALS['componentInstance'] = componentInstance;
+        this.popOutService.focusPopoutWindow();
+      }
+    }
+  }
+
 
 
 
