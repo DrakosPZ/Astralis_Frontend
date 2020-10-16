@@ -20,7 +20,7 @@ export class PopoutService {
 
   openPopoutModal(data) {
     const windowInstance = this.openOnce(
-      'assets/modal/popout.html',
+      'Game/' + data.id,
       'MODAL_POPOUT'
     );
 
@@ -94,7 +94,7 @@ export class PopoutService {
     return containerRef.instance;
   }
 
-  createInjector(data): PortalInjector {
+  createInjector(data): Injector {
     const injectionTokens = new WeakMap();
     injectionTokens.set(POPOUT_MODAL_DATA, data);
     return new PortalInjector(this.injector, injectionTokens);

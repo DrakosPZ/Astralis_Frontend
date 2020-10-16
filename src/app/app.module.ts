@@ -70,6 +70,7 @@ import { GamesComponent } from './modules/games/games.component';
 import { GameInspectionComponent } from './modules/games/_modules/game-inspection/game-inspection.component';
 import { GameEditComponent } from './modules/games/_modules/game-edit/game-edit.component';
 import { ScreenComponent } from './gameWindow/_screen/screen.component';
+import { POPOUT_MODAL_DATA } from './gameWindow/_services/PopoutService/popout.tokens';
 
 @NgModule({
   declarations: [
@@ -160,7 +161,7 @@ import { ScreenComponent } from './gameWindow/_screen/screen.component';
       provide: HTTP_INTERCEPTORS,
       useClass: JwtTokenInterceptor,
       multi: true
-    },
+    }, 
     AuthGuard
   ],
   bootstrap: [AppComponent]
