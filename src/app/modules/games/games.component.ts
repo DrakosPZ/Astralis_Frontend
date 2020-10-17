@@ -193,8 +193,9 @@ export class GamesComponent implements OnInit {
 
   openGamePopout(game: Game) {
     const modalData = {
-      id: game.identifier,
-      name: game.name
+      game_id: game.identifier,
+      user_id: this.currentUser.identifier,
+      game_name: game.name
     };
     if (!this.popOutService.isPopoutWindowOpen()) {
       this.popOutService.openPopoutModal(modalData);

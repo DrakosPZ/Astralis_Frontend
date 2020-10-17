@@ -1,8 +1,9 @@
 import { InjectionToken } from '@angular/core';
 
 export interface PopoutData {
-  id: string;
-  name: string;
+  game_id: string;
+  user_id: string;
+  game_name: string;
 }
 
 export const POPOUT_MODAL_DATA = new InjectionToken<PopoutData>('POPOUT_MODAL_DATA');

@@ -1,7 +1,7 @@
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
 import { ScreenComponent } from '../../_screen/screen.component';
-import { POPOUT_MODALS, POPOUT_MODAL_DATA } from './popout.tokens';
+import { PopoutData, POPOUT_MODALS, POPOUT_MODAL_DATA } from './popout.tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +18,15 @@ export class PopoutService {
 
   ngOnDestroy() {}
 
-  openPopoutModal(data) {
+  openPopoutModal(data: PopoutData) {
     const windowInstance = this.openOnce(
-      'Game/' + data.id,
+      'Game/' + data.game_id,
       'MODAL_POPOUT'
     );
-
-    // Wait for window instance to be created
+    // Wait for window instance to be created, maybe replace with a hook
     setTimeout(() => {
       this.createCDKPortal(data, windowInstance);
-    }, 1000);
+    }, 100);
   }
 
   openOnce(url, target) {
@@ -41,7 +40,7 @@ export class PopoutService {
     return winRef;
   }
 
-  createCDKPortal(data, windowInstance) {
+  createCDKPortal(data: PopoutData, windowInstance) {
     if (windowInstance) {
       // Create a PortalOutlet with the body of the new window document
       const outlet = new DomPortalOutlet(windowInstance.document.body, this.componentFactoryResolver, this.applicationRef, this.injector);
@@ -62,7 +61,7 @@ export class PopoutService {
 
         // Attach the portal
         let componentInstance;
-        windowInstance.document.title = 'GameScreen';
+        windowInstance.document.title = data.game_name;
         componentInstance = this.attachScreenContainer(outlet, injector);
 
         POPOUT_MODALS['windowInstance'] = windowInstance;
@@ -94,7 +93,7 @@ export class PopoutService {
     return containerRef.instance;
   }
 
-  createInjector(data): Injector {
+  createInjector(data: PopoutData): PortalInjector {
     const injectionTokens = new WeakMap();
     injectionTokens.set(POPOUT_MODAL_DATA, data);
     return new PortalInjector(this.injector, injectionTokens);

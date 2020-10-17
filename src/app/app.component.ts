@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { LoginService } from './_shared/_services/login/login.service';
+import { NavbarService } from './_shared/_services/navbar/navbar.service';
 
 @Component({
   selector: 'app-root',

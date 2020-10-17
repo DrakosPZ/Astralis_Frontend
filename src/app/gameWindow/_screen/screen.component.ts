@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, Inject, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
-import { PopoutData, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout.tokens';
+import { PopoutData, POPOUT_MODALS, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout.tokens';
 
 @Component({
   selector: 'app-screen',
@@ -12,15 +13,16 @@ import { PopoutData, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout
 export class ScreenComponent implements OnInit {
   id: string;
   name: string;
+  userID: string;
   detailGame: GameDetail;
 
   constructor(
-    private route: ActivatedRoute,
     private gameService: GameService,
-    @Inject(POPOUT_MODAL_DATA) public data: PopoutData
+    @Inject(POPOUT_MODAL_DATA) private data: PopoutData
     ) { 
-      this.id = this.data.id;
-      //this.name = this.data.name;
+      this.id = data.game_id;
+      this.name = data.game_name;
+      this.userID = data.user_id;
     }
 
   ngOnInit(): void {
@@ -28,11 +30,12 @@ export class ScreenComponent implements OnInit {
   }
 
   getGameData(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.data.game_id
     this.gameService.getDetailGame(id)
       .subscribe(detailGame => {
         this.detailGame = detailGame;
-        console.log("Called Server and got this game: " + this.detailGame);
+        console.log("Called Server and got this game: ");
+        console.log(this.detailGame);
       });
   }
 
