@@ -199,19 +199,18 @@ export class GamesComponent implements OnInit {
     };
     if (!this.popOutService.isPopoutWindowOpen()) {
       this.popOutService.openPopoutModal(modalData);
-    } else {
-      const sameCustomer = POPOUT_MODALS['componentInstance'].name === name;
-      // When popout modal is open and there is no change in data, focus on popout modal
-      if (sameCustomer) {
-        this.popOutService.focusPopoutWindow();
-      } else {
-        POPOUT_MODALS['outlet'].detach();
-        const injector = this.popOutService.createInjector(modalData);
-        const componentInstance = this.popOutService.attachScreenContainer(POPOUT_MODALS['outlet'], injector);
-        POPOUT_MODALS['componentInstance'] = componentInstance;
-        this.popOutService.focusPopoutWindow();
-      }
     }
+    
+    //#possibly remove this part once an actual navigation Route compatible solution
+    //# is implemented
+    setTimeout(() => {
+      POPOUT_MODALS['outlet'].detach();
+      const injector = this.popOutService.createInjector(modalData);
+      const componentInstance = this.popOutService.attachScreenContainer(POPOUT_MODALS['outlet'], injector);
+      POPOUT_MODALS['componentInstance'] = componentInstance;
+      this.popOutService.focusPopoutWindow();
+    }, 100);
+    
   }
 
 
