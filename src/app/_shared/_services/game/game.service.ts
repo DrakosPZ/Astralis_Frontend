@@ -99,5 +99,39 @@ export class GameService extends UniversalService{
       catchError(this.handleError<Game[]>('startGame'))
     );
   }
+
+
+
+  startGameLobby(identifier: string): Observable<GameDetail>{
+    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+    .pipe(
+      tap((gotGame: GameDetail) => this.log(`start Game Lobby: w/ ${gotGame}`)),
+      catchError(this.handleError<GameDetail>('startGameLobby'))
+    );
+  }
+
+  saveGameLobby(identifier: string): Observable<boolean>{
+    return this.http.get<boolean>(this.() + identifier, this.httpOptions)
+    .pipe(
+      tap((saved: boolean) => this.log(`saved Game: w/ ${saved}`)),
+      catchError(this.handleError<boolean>('saveGameLobby'))
+    );
+  }
+
+  pauseGameLobby(identifier: string): Observable<GameDetail>{
+    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+    .pipe(
+      tap((paused: GameDetail) => this.log(`paused Game: w/ ${paused}`)),
+      catchError(this.handleError<GameDetail>('pauseGameLobby'))
+    );
+  }
+
+  closeGameLobby(identifier: string): Observable<GameDetail>{
+    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+    .pipe(
+      tap((closed: GameDetail) => this.log(`closed Game: w/ ${closed}`)),
+      catchError(this.handleError<GameDetail>('closeGameLobby'))
+    );
+  }
   
 }

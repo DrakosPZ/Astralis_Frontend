@@ -7,6 +7,7 @@ import { findInArray, Game, turnDetailIntoSimple } from 'src/app/_shared/_models
 import { User } from 'src/app/_shared/_models/user';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LoginService } from 'src/app/_shared/_services/login/login.service';
+import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 @Component({
   selector: 'app-games',
@@ -145,6 +146,22 @@ export class GamesComponent implements OnInit {
     this.leaveGame(clickedGame.identifier, this.currentUser.identifier, inspect);
   }
 
+  callStartGame(clickedGame: Game){
+    this.startGame(clickedGame.identifier);
+  }
+
+  callSaveGame(clickedGame: Game){
+    this.saveGame(clickedGame.identifier);
+  }
+
+  callPauseGame(clickedGame: Game){
+    this.pauseGame(clickedGame.identifier);
+  }
+
+  callCloseGame(clickedGame: Game){
+    this.closeGame(clickedGame.identifier);
+  }
+
   calledByEditScreen(text: String){
     switch (text) {
       case "resetGame":
@@ -165,20 +182,33 @@ export class GamesComponent implements OnInit {
     }
 
     switch (text) {
+      case "start":
+        this.callStartGame(useddetailGame);
+        break;
+      case "save":
+        this.callSaveGame(useddetailGame);
+        break;
+      case "pause":
+        this.callPauseGame(useddetailGame);
+        break;
+      case "close":
+        this.callCloseGame(useddetailGame);
+        break;
+      case "load":
+        this.openGamePopout(useddetailGame);
+        break;
       case "join":
         this.callJoinGame(useddetailGame, inspect);
         break;
       case "leave":
         this.callLeaveGame(useddetailGame, inspect);
         break;
-      case "load":
-        this.openGamePopout(useddetailGame);
-        break;
     }
   }
 
   prepNewGame(){
     this.newGame = new Game();
+    this.newGame.status = GameStatus.UNINITIALIZED;
   }
   
   startNewGame(){
@@ -288,6 +318,22 @@ export class GamesComponent implements OnInit {
               this.getDetailGame(game.identifier, inspect);
             }
           });
+  }
+
+  startGame(identifier: String){
+    this.gameService.startGameLobby(identifier.toString());
+  }
+
+  saveGame(identifier: String){
+    this.gameService.saveGameLobby(identifier.toString());
+  }
+
+  pauseGame(identifier: String){
+    this.gameService.pauseGameLobby(identifier.toString());
+  }
+
+  closeGame(identifier: String){
+    this.gameService.closeGameLobby(identifier.toString());
   }
 
   postNewGame(newGame: Game){

@@ -55,6 +55,24 @@
 
     <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="20px"> 
         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="10px"> 
+            <button mat-raised-button *ngIf="checkIfAlreadyIn()" (click)="callStartGame()"> 
+                <h3>Start Game</h3>
+            </button>
+
+            <button mat-raised-button (click)="callSaveGame()"> 
+                <h3>Save Game</h3>
+            </button>
+
+            <button mat-raised-button (click)="callPauseGame()"> 
+                <h3>Pause Game</h3>
+            </button>
+
+            <button mat-raised-button (click)="callCloseGame()"> 
+                <h3>Close Game</h3>
+            </button>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="10px"> 
             <button mat-raised-button *ngIf="checkIfAlreadyIn()" (click)="callLoadGame()"> 
                 <h3>Load Game</h3>
             </button>

@@ -60,16 +60,38 @@ export class GameInspectionComponent implements OnInit {
     return inGame;
   }
 
+  adminInGame(): boolean{
+    console.error("Game Inspection Component #64: , if checking Person is Admin not yet implemented!");
+    return true;
+  }
+
+  callStartGame(){
+    this.gameSend.emit("start");
+  }
+
+  callSaveGame(){
+    this.gameSend.emit("save");
+  }
+
+  callPauseGame(){
+    this.gameSend.emit("pause");
+  }
+
+  callCloseGame(){
+    this.gameSend.emit("close");
+  }
+
   callLoadGame(){
     this.gameSend.emit("load");
   }
 
   callCreateCountry(){
-
+    console.error("Game Inspection Component #89: , Creating Country not yet implemented!");
+  
   }
   
   callJoinCountry(){
-
+    console.error("Game Inspection Component #89: , Join Country not yet implemented!");
   }
   
   callJoinGame(){

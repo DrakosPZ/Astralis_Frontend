@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
@@ -19,6 +19,12 @@ const AFTER_LOGIN = "/afterLogin";
 const GAME_URL = "/gamestate";
 const JOINEDGAME_URL = "/joinedGame";
 const STARTGAME_URL = "/createNewGame";
+const STARTGAMELOBBY_URL = "/startGame";
+const PAUSEGAMELOBBY_URL = "/.";
+const STOREGAMELOBBY_URL = "/storeGame";
+const STOPGAMELOBBY_URL = "/.";
+const LOADGAMELOBBY_URL = "/.";
+const CLOSEGAMELOBBY_URL = "/.";
 const JOINGAME_URL = "/addUser";
 const LEAVEGAME_URL = "/removeUser";
 const SEARCHFOR_URL = "/searchFor";
@@ -135,7 +141,7 @@ export class UniversalService {
 
 
 
-  //-----------------------------------------User Related URLs
+  //-----------------------------------------Game Lobby Related URLs
    /**
    * Gets the URL to the game API
    * 
@@ -208,6 +214,68 @@ protected searchForIdentifierURL(): string{
 */
 protected searchForDetailIdentifier(): string{
  return this.gameURL()+DETAILFOR_URL+IDENTIFIER_URL;
+}  
+  
+
+
+
+
+/**
+ * Gets the URL to the game API with the Start Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + StartGameLobby + ?Identifier
+*/
+protected startGameLobbyIdentifier(): string{
+ return this.gameURL()+STARTGAMELOBBY_URL+IDENTIFIER_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Pause Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + PauseGameLobby + ?Identifier
+*/
+protected pauseGameLobbyIdentifier(): string{
+  console.error("pauseGameLobbyIdentifier Route not yet implemented")
+ return this.gameURL()+PAUSEGAMELOBBY_URL+IDENTIFIER_URL;
+}  
+
+/**
+ * Gets the URL to the game API with the Store Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + StoreGameLobby + ?Identifier
+*/
+protected storeGameLobbyIdentifier(): string{
+ return this.gameURL()+STOREGAMELOBBY_URL+IDENTIFIER_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Stop Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + StopGameLobby + ?Identifier
+*/
+protected stopGameLobbyIdentifier(): string{
+  console.error("stopGameLobbyIdentifier Route not yet implemented")
+ return this.gameURL()+STOPGAMELOBBY_URL+IDENTIFIER_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Load Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + LoadGameLobby + ?Identifier
+*/
+protected loadGameLobbyIdentifier(): string{
+  console.error("loadGameLobbyIdentifier Route not yet implemented")
+ return this.gameURL()+LOADGAMELOBBY_URL+IDENTIFIER_URL;
+}  
+  
+/**
+ * Gets the URL to the game API with the Close Game Lobby and Identifier Part
+ * 
+ * @returns the GameAPIUrl + CloseGameLobby + ?Identifier
+*/
+protected closeGameLobbyIdentifier(): string{
+  console.error("closeGameLobbyIdentifier Route not yet implemented")
+ return this.gameURL()+CLOSEGAMELOBBY_URL+IDENTIFIER_URL;
 }  
 
 
