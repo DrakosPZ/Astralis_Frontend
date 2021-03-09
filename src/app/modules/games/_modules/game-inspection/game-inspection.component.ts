@@ -3,6 +3,7 @@ import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { GameRole } from 'src/app/_shared/_models/gameRole';
 import { UserGameDetail } from 'src/app/_shared/_models/details/userGameDetail';
 import { User } from 'src/app/_shared/_models/user';
+import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 @Component({
   selector: 'app-game-inspection',
@@ -14,10 +15,14 @@ export class GameInspectionComponent implements OnInit {
   @Input() displayed: GameDetail;
   @Input() currentUser: User;
   @Output() gameSend = new EventEmitter();
+  loadingBText: string = "Pause Game";
+  isModerator: boolean = false;
+
 
   constructor() { }
 
   ngOnInit(): void {
+    this.isModerator = this.adminInGame();
   }
 
 
@@ -61,8 +66,56 @@ export class GameInspectionComponent implements OnInit {
   }
 
   adminInGame(): boolean{
-    console.error("Game Inspection Component #64: , if checking Person is Admin not yet implemented!");
-    return true;
+    let isAdmin = false;
+    let admins = this.getAdmins();
+    admins.forEach(
+      admin => {
+        if(admin.user.identifier === this.currentUser.identifier){
+          isAdmin = true;
+        }
+      }
+    );
+    return isAdmin;
+  }
+
+  canStartGame(): boolean{
+    if(this.displayed.status === GameStatus.UNINITIALIZED || 
+       this.displayed.status === GameStatus.CLOSED){
+      return true;
+    }
+    return false;
+  }
+
+  canPauseGame(): boolean{
+    if(this.displayed.status === GameStatus.RUNNING || 
+       this.displayed.status === GameStatus.PAUSED){
+      return true;
+    }
+    return false;
+  }
+
+  canStoreGame(): boolean{
+    if(this.displayed.status === GameStatus.RUNNING || 
+       this.displayed.status === GameStatus.PAUSED ||
+       this.displayed.status === GameStatus.CLOSED){
+      return true;
+    }
+    return false;
+  }
+
+  canCloseGame(): boolean{
+    if(this.displayed.status === GameStatus.RUNNING|| 
+       this.displayed.status === GameStatus.PAUSED){
+      return true;
+    }
+    return false;
+  }
+
+  canLoadGame(): boolean{
+    if(this.displayed.status === GameStatus.RUNNING){
+      return true;
+    }
+    return false;
   }
 
   callStartGame(){
@@ -75,6 +128,9 @@ export class GameInspectionComponent implements OnInit {
 
   callPauseGame(){
     this.gameSend.emit("pause");
+    if(this.loadingBText === "Pause Game"){
+      this.loadingBText = "Unpause Game";
+    }
   }
 
   callCloseGame(){

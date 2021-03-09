@@ -146,20 +146,20 @@ export class GamesComponent implements OnInit {
     this.leaveGame(clickedGame.identifier, this.currentUser.identifier, inspect);
   }
 
-  callStartGame(clickedGame: Game){
-    this.startGame(clickedGame.identifier);
+  callStartGame(clickedGame: Game, inspect: boolean){
+    this.startGame(clickedGame.identifier, inspect);
   }
 
-  callSaveGame(clickedGame: Game){
-    this.saveGame(clickedGame.identifier);
+  callSaveGame(clickedGame: Game, inspect: boolean){
+    this.saveGame(clickedGame.identifier, inspect);
   }
 
-  callPauseGame(clickedGame: Game){
-    this.pauseGame(clickedGame.identifier);
+  callPauseGame(clickedGame: Game, inspect: boolean){
+    this.pauseGame(clickedGame.identifier, inspect);
   }
 
-  callCloseGame(clickedGame: Game){
-    this.closeGame(clickedGame.identifier);
+  callCloseGame(clickedGame: Game, inspect: boolean){
+    this.stopGame(clickedGame.identifier, inspect);
   }
 
   calledByEditScreen(text: String){
@@ -183,16 +183,16 @@ export class GamesComponent implements OnInit {
 
     switch (text) {
       case "start":
-        this.callStartGame(useddetailGame);
+        this.callStartGame(useddetailGame, inspect);
         break;
       case "save":
-        this.callSaveGame(useddetailGame);
+        this.callSaveGame(useddetailGame, inspect);
         break;
       case "pause":
-        this.callPauseGame(useddetailGame);
+        this.callPauseGame(useddetailGame, inspect);
         break;
       case "close":
-        this.callCloseGame(useddetailGame);
+        this.callCloseGame(useddetailGame, inspect);
         break;
       case "load":
         this.openGamePopout(useddetailGame);
@@ -320,20 +320,45 @@ export class GamesComponent implements OnInit {
           });
   }
 
-  startGame(identifier: String){
-    this.gameService.startGameLobby(identifier.toString());
+  startGame(identifier: String, inspect: boolean){
+    this.gameService.startGameLobby(identifier.toString())
+          .pipe(first()).subscribe(game => {
+            if(inspect){
+              this.inspectedGame = game;
+            } else {
+              this.searchInspectedGame = game;
+            }
+          });
   }
 
-  saveGame(identifier: String){
-    this.gameService.saveGameLobby(identifier.toString());
+  saveGame(identifier: String, inspect: boolean){
+    this.gameService.saveGameLobby(identifier.toString())
+    .pipe(first()).subscribe(returned => {
+      console.log("GameStorage returned " + returned)
+      console.log("Maybe Add Message to tell if Game was Stored or not");
+    });
   }
 
-  pauseGame(identifier: String){
-    this.gameService.pauseGameLobby(identifier.toString());
+  pauseGame(identifier: String, inspect: boolean){
+    this.gameService.pauseGameLobby(identifier.toString())
+    .pipe(first()).subscribe(game => {
+      if(inspect){
+        this.inspectedGame = game;
+      } else {
+        this.searchInspectedGame = game;
+      }
+    });
   }
 
-  closeGame(identifier: String){
-    this.gameService.closeGameLobby(identifier.toString());
+  stopGame(identifier: String, inspect: boolean){
+    this.gameService.stopGameLobby(identifier.toString())
+    .pipe(first()).subscribe(game => {
+      if(inspect){
+        this.inspectedGame = game;
+      } else {
+        this.searchInspectedGame = game;
+      }
+    });
   }
 
   postNewGame(newGame: Game){

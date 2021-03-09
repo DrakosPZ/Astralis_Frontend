@@ -1,6 +1,8 @@
 export enum GameStatus {
     UNINITIALIZED = "UNINITIALIZED", 
+    INITIALIZING = "INITIALIZING", 
     RUNNING = "RUNNING", 
     PAUSED = "PAUSED", 
-    STORING = "STORING"
+    STORING = "STORING", 
+    CLOSED = "CLOSED", 
 }

@@ -20,11 +20,11 @@ const GAME_URL = "/gamestate";
 const JOINEDGAME_URL = "/joinedGame";
 const STARTGAME_URL = "/createNewGame";
 const STARTGAMELOBBY_URL = "/startGame";
-const PAUSEGAMELOBBY_URL = "/.";
+const PAUSEGAMELOBBY_URL = "/pauseGame";
 const STOREGAMELOBBY_URL = "/storeGame";
-const STOPGAMELOBBY_URL = "/.";
-const LOADGAMELOBBY_URL = "/.";
-const CLOSEGAMELOBBY_URL = "/.";
+const STOPGAMELOBBY_URL = "/stopGame";
+const OPENGAMELOBBY_URL = "/joinGame";
+const CLOSEGAMELOBBY_URL = "/leaveGame";
 const JOINGAME_URL = "/addUser";
 const LEAVEGAME_URL = "/removeUser";
 const SEARCHFOR_URL = "/searchFor";
@@ -254,18 +254,16 @@ protected storeGameLobbyIdentifier(): string{
  * @returns the GameAPIUrl + StopGameLobby + ?Identifier
 */
 protected stopGameLobbyIdentifier(): string{
-  console.error("stopGameLobbyIdentifier Route not yet implemented")
  return this.gameURL()+STOPGAMELOBBY_URL+IDENTIFIER_URL;
 }  
   
 /**
- * Gets the URL to the game API with the Load Game Lobby and Identifier Part
+ * Gets the URL to the game API with the Open Game Lobby and Identifier Part
  * 
- * @returns the GameAPIUrl + LoadGameLobby + ?Identifier
+ * @returns the GameAPIUrl + OpenGameLobby + ?Identifier
 */
-protected loadGameLobbyIdentifier(): string{
-  console.error("loadGameLobbyIdentifier Route not yet implemented")
- return this.gameURL()+LOADGAMELOBBY_URL+IDENTIFIER_URL;
+protected openGameLobbyIdentifier(): string{
+  return this.gameURL()+OPENGAMELOBBY_URL+IDENTIFIER_URL;
 }  
   
 /**
@@ -274,7 +272,6 @@ protected loadGameLobbyIdentifier(): string{
  * @returns the GameAPIUrl + CloseGameLobby + ?Identifier
 */
 protected closeGameLobbyIdentifier(): string{
-  console.error("closeGameLobbyIdentifier Route not yet implemented")
  return this.gameURL()+CLOSEGAMELOBBY_URL+IDENTIFIER_URL;
 }  
 

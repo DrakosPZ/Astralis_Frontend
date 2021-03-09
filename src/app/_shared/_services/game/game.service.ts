@@ -103,7 +103,7 @@ export class GameService extends UniversalService{
 
 
   startGameLobby(identifier: string): Observable<GameDetail>{
-    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+    return this.http.get<GameDetail>(this.startGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
       tap((gotGame: GameDetail) => this.log(`start Game Lobby: w/ ${gotGame}`)),
       catchError(this.handleError<GameDetail>('startGameLobby'))
@@ -111,7 +111,7 @@ export class GameService extends UniversalService{
   }
 
   saveGameLobby(identifier: string): Observable<boolean>{
-    return this.http.get<boolean>(this.() + identifier, this.httpOptions)
+    return this.http.get<boolean>(this.storeGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
       tap((saved: boolean) => this.log(`saved Game: w/ ${saved}`)),
       catchError(this.handleError<boolean>('saveGameLobby'))
@@ -119,18 +119,18 @@ export class GameService extends UniversalService{
   }
 
   pauseGameLobby(identifier: string): Observable<GameDetail>{
-    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+    return this.http.get<GameDetail>(this.pauseGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
       tap((paused: GameDetail) => this.log(`paused Game: w/ ${paused}`)),
       catchError(this.handleError<GameDetail>('pauseGameLobby'))
     );
   }
 
-  closeGameLobby(identifier: string): Observable<GameDetail>{
-    return this.http.get<GameDetail>(this.() + identifier, this.httpOptions)
+  stopGameLobby(identifier: string): Observable<GameDetail>{
+    return this.http.get<GameDetail>(this.stopGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
-      tap((closed: GameDetail) => this.log(`closed Game: w/ ${closed}`)),
-      catchError(this.handleError<GameDetail>('closeGameLobby'))
+      tap((stoped: GameDetail) => this.log(`stoped Game: w/ ${stoped}`)),
+      catchError(this.handleError<GameDetail>('stopGameLobby'))
     );
   }
   
