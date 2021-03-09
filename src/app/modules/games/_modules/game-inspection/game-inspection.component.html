@@ -8,6 +8,8 @@
                     <img style="height: 100px; width: 100px; background-color: red;"/>
                     <h3>Description</h3>
                     <p>{{displayed.description}}</p>
+                    <h3>Status</h3>
+                    <p>{{displayed.status}}</p>
                     <h3>Admin Team</h3>
                     <div *ngFor="let admins of getAdmins()">
                         <span>Name: {{admins.user.nickName}} Role: {{admins.gameRole}}</span>

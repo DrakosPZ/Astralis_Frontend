@@ -34,8 +34,6 @@ export class ScreenComponent implements OnInit {
     this.gameService.getDetailGame(id)
       .subscribe(detailGame => {
         this.detailGame = detailGame;
-        console.log("Called Server and got this game: ");
-        console.log(this.detailGame);
       });
   }
 
