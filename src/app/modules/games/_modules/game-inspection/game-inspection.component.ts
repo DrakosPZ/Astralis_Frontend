@@ -16,6 +16,8 @@ export class GameInspectionComponent implements OnInit {
   @Input() currentUser: User;
   @Output() gameSend = new EventEmitter();
   loadingBText: string = "Pause Game";
+  pause = "Pause Game";
+  unpause = "Unpause Game";
   isModerator: boolean = false;
 
 
@@ -23,6 +25,11 @@ export class GameInspectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.isModerator = this.adminInGame();
+    if(this.displayed.status == GameStatus.PAUSED){
+      this.loadingBText = this.unpause;
+    } else {
+      this.loadingBText = this.pause;
+    }
   }
 
 
@@ -128,8 +135,10 @@ export class GameInspectionComponent implements OnInit {
 
   callPauseGame(){
     this.gameSend.emit("pause");
-    if(this.loadingBText === "Pause Game"){
-      this.loadingBText = "Unpause Game";
+    if(this.loadingBText === this.pause){
+      this.loadingBText = this.unpause;
+    } else {
+      this.loadingBText = this.pause;
     }
   }
 
