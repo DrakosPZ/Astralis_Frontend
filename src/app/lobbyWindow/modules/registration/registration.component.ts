@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, ValidatorFn, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { LoginInformation } from 'src/app/_shared/_models/LoginInformation';
 import { User } from 'src/app/_shared/_models/user';
 import { UserRole } from 'src/app/_shared/_models/userRole';
 import { LoginService } from 'src/app/_shared/_services/login/login.service';

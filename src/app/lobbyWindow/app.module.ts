@@ -5,8 +5,8 @@ import { AppRoutingModule } from './_shared/_navigation/app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtTokenInterceptor } from './_shared/_interceptors/JwtTokenInterceptor';
-import { ApiInterceptor } from './_shared/_interceptors/api-interceptor';
+import { JwtTokenInterceptor } from 'src/app/_shared/_interceptors/JwtTokenInterceptor';
+import { ApiInterceptor } from 'src/app/_shared/_interceptors/api-interceptor';
 import { AuthGuard } from './_shared/_navigation/guards/auth-guard.service';
 import { LoginComponent } from './modules/login/login.component';
 
@@ -69,8 +69,8 @@ import { LogInHeaderComponent } from './_shared/_navigation/play/log-in-header/l
 import { GamesComponent } from './modules/games/games.component';
 import { GameInspectionComponent } from './modules/games/_modules/game-inspection/game-inspection.component';
 import { GameEditComponent } from './modules/games/_modules/game-edit/game-edit.component';
-import { ScreenComponent } from './gameWindow/_screen/screen.component';
-import { POPOUT_MODAL_DATA } from './gameWindow/_services/PopoutService/popout.tokens';
+import { ScreenComponent } from '../gameWindow/_screen/screen.component';
+import { POPOUT_MODAL_DATA } from '../gameWindow/_services/PopoutService/popout.tokens';
 
 @NgModule({
   declarations: [

@@ -1,9 +1,7 @@
-import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
-import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, Inject, Injector, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Inject, OnInit } from '@angular/core';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
-import { PopoutData, POPOUT_MODALS, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout.tokens';
+import { PopoutData, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout.tokens';
 
 @Component({
   selector: 'app-screen',
