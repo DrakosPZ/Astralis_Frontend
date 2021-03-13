@@ -1,6 +1,6 @@
 import { ComponentPortal, DomPortalOutlet, PortalInjector } from '@angular/cdk/portal';
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
-import { ScreenComponent } from '../../_screen/screen.component';
+import { ScreenComponent } from '../../screen/screen.component';
 import { PopoutData, POPOUT_MODALS, POPOUT_MODAL_DATA } from './popout.tokens';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ScreenComponent } from 'src/app/gameWindow/_screen/screen.component';
+import { ScreenComponent } from 'src/app/gameWindow/screen/screen.component';
 import { GamesComponent } from 'src/app/lobbyWindow/modules/games/games.component';
 import { HomeComponent } from 'src/app/lobbyWindow/modules/home/home.component';
 import { LoginComponent } from 'src/app/lobbyWindow/modules/login/login.component';

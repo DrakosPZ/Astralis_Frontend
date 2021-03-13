@@ -133,5 +133,13 @@ export class GameService extends UniversalService{
       catchError(this.handleError<GameDetail>('stopGameLobby'))
     );
   }
+
+  forwardOpenLobby(): string{
+    return this.openGameLobbyIdentifier();
+  }
+
+  forwardCloseLobby(): string{
+    return this.closeGameLobbyIdentifier();
+  }
   
 }
