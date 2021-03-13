@@ -19,11 +19,11 @@ export class ScreenComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
-    @Inject(POPOUT_MODAL_DATA) private data: PopoutData
+    //@Inject(POPOUT_MODAL_DATA) private data: PopoutData
     ) { 
-      this.id = data.game_id;
-      this.name = data.game_name;
-      this.userID = data.user_id;
+      //this.id = data.game_id;
+      //this.name = data.game_name;
+      //this.userID = data.user_id;
     }
 
   ngOnInit(): void {

@@ -222,7 +222,9 @@ export class GamesComponent implements OnInit {
   }
 
   openGamePopout(game: Game) {
-    const modalData = {
+    window.open("http://localhost:4200/Game",'_blank')
+    //window.open("http://localhost:4200/Game/" + game.identifier,'_blank')
+    /*const modalData = {
       game_id: game.identifier,
       user_id: this.currentUser.identifier,
       game_name: game.name
@@ -239,7 +241,7 @@ export class GamesComponent implements OnInit {
       const componentInstance = this.popOutService.attachScreenContainer(POPOUT_MODALS['outlet'], injector);
       POPOUT_MODALS['componentInstance'] = componentInstance;
       this.popOutService.focusPopoutWindow();
-    }, 100);
+    }, 100);*/
     
   }
 
