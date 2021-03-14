@@ -1,7 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { PopoutService } from 'src/app/gameWindow/_services/PopoutService/popout.service';
-import { POPOUT_MODALS } from 'src/app/gameWindow/_services/PopoutService/popout.tokens';
 import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
 import { findInArray, Game, turnDetailIntoSimple } from 'src/app/_shared/_models/game';
 import { User } from 'src/app/_shared/_models/user';
@@ -40,8 +38,7 @@ export class GamesComponent implements OnInit {
 
   
   constructor(private gameService: GameService,
-              private loginService: LoginService,
-              private popOutService: PopoutService) {
+              private loginService: LoginService) {
     this.getCurrentUser();
     this.newGame = new Game();
     this.searchInput = "";
@@ -215,32 +212,8 @@ export class GamesComponent implements OnInit {
     this.postNewGame(this.newGame);
   }
 
-
-  @HostListener('window:beforeunload', ['$event'])
-  onWindowClose(event: Event) {
-    this.popOutService.closePopoutModal();
-  }
-
   openGamePopout(game: Game) {
-    const modalData = {
-      game_id: game.identifier,
-      user_id: this.currentUser.identifier,
-      game_name: game.name
-    };
-    if (!this.popOutService.isPopoutWindowOpen()) {
-      this.popOutService.openPopoutModal(modalData);
-    }
-    
-    //#possibly remove this part once an actual navigation Route compatible solution
-    //# is implemented
-    setTimeout(() => {
-      POPOUT_MODALS['outlet'].detach();
-      const injector = this.popOutService.createInjector(modalData);
-      const componentInstance = this.popOutService.attachScreenContainer(POPOUT_MODALS['outlet'], injector);
-      POPOUT_MODALS['componentInstance'] = componentInstance;
-      this.popOutService.focusPopoutWindow();
-    }, 100);
-    
+    window.open("Game/" + this.currentUser.identifier + "&" + game.identifier, "_blank")
   }
 
 
