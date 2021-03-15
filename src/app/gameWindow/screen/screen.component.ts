@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LogicGameState } from '../_shared/_models/logicGameState';
@@ -15,6 +15,7 @@ export class ScreenComponent implements OnInit {
 
   eventSource = null;
   gameState: LogicGameState;
+  @ViewChild('displayScreen') canvas: ElementRef;
 
   constructor(
     private gameService: GameService,
@@ -44,6 +45,17 @@ export class ScreenComponent implements OnInit {
       this.gameState = JSON.parse(message.data)
       console.log("Recieved Data");
       console.log(this.gameState);
+      this.drawState();
+    });
+  }
+
+
+  drawState(): void{
+    console.log(this.canvas);
+    this.canvas.nativeElement.
+    this.gameState.countries.forEach(country => {
+      let ship = this.canvas.nativeElement.insertAdjacentHTML('beforeend', '<area class="ship"/>');
+      ship.style.color = "";
     });
   }
 }
