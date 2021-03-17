@@ -15,7 +15,7 @@ export class ScreenComponent implements OnInit {
 
   eventSource = null;
   gameState: LogicGameState;
-  @ViewChild('displayScreen') canvas: ElementRef;
+  @ViewChild('#displayScreen') canvas: ElementRef;
 
   constructor(
     private gameService: GameService,
@@ -30,6 +30,9 @@ export class ScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGameData();
+
+    //To Test GameDrawing
+    this.drawState();
   }
 
   ngOnDestroy(): void{
@@ -52,10 +55,24 @@ export class ScreenComponent implements OnInit {
 
   drawState(): void{
     console.log(this.canvas);
-    this.canvas.nativeElement.
+    /*this.canvas.nativeElement.
     this.gameState.countries.forEach(country => {
       let ship = this.canvas.nativeElement.insertAdjacentHTML('beforeend', '<area class="ship"/>');
       ship.style.color = "";
-    });
+    });*/
+    const canvas: HTMLCanvasElement = document.querySelector("#mainGalaxyScreen");
+    // Initialize the GL context
+    const gl = canvas.getContext("webgl");
+
+    // Only continue if WebGL is available and working
+    if (gl === null) {
+      alert("Unable to initialize WebGL. Your browser or machine may not support it.");
+      return;
+    }
+
+    // Set clear color to black, fully opaque
+    gl.clearColor(0, 0, 0, 1.0);
+    // Clear the color buffer with specified clear color
+    gl.clear(gl.COLOR_BUFFER_BIT);
   }
 }
