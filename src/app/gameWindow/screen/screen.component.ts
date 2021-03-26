@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
-import { PopoutData, POPOUT_MODAL_DATA } from '../_services/PopoutService/popout.tokens';
 import { LogicGameState } from '../_shared/_models/logicGameState';
 
 @Component({
@@ -11,23 +10,29 @@ import { LogicGameState } from '../_shared/_models/logicGameState';
 })
 export class ScreenComponent implements OnInit {
   id: string;
-  name: string;
   userID: string;
-  detailGame: GameDetail;
+  gameID: string;
 
   eventSource = null;
+  gameState: LogicGameState;
+  @ViewChild('#displayScreen') canvas: ElementRef;
 
   constructor(
     private gameService: GameService,
-    //@Inject(POPOUT_MODAL_DATA) private data: PopoutData
+    private route: ActivatedRoute,
     ) { 
-      //this.id = data.game_id;
-      //this.name = data.game_name;
-      //this.userID = data.user_id;
+      this.route.paramMap.subscribe( params => {
+        let ids = params.get('ids').split('&')
+        this.userID = ids[0];
+        this.gameID = ids[1];
+      });
     }
 
   ngOnInit(): void {
     this.getGameData();
+
+    //To Test GameDrawing
+    this.drawState();
   }
 
   ngOnDestroy(): void{
@@ -35,33 +40,39 @@ export class ScreenComponent implements OnInit {
   }
 
   getGameData(): void {
-    /*const id = this.data.game_id
-    this.gameService.getDetailGame(id)
-      .subscribe(detailGame => {
-        this.detailGame = detailGame;
-      });*/
-    this.eventSource = new EventSource(this.gameService.forwardOpenLobby() + this.userID);
+    //TODO: TAKE CARE OF closing connection when window closed
+    this.eventSource = new EventSource(this.gameService.forwardOpenLobby() + this.gameID);
     console.log("CONNECTED SUCCESSFULLY: " + this.eventSource);
 
-    this.eventSource.addEventListener('open', function(e) {
-        console.log("onopen", e);
-        this.$scope.$apply();
-    }, false);
+    this.eventSource.addEventListener('message', message => {
+      this.gameState = JSON.parse(message.data)
+      console.log("Recieved Data");
+      console.log(this.gameState);
+      this.drawState();
+    });
+  }
 
-    this.eventSource.addEventListener('error', function(e) {
-        if (e.eventPhase == EventSource.CLOSED) {
-          console.log('connection closed (..reconnect)', e);
-        } else {
-          console.log("onerror", e);
-        }
-        this.$scope.$apply();
-      }, false);
-    
-    this.eventSource.addEventListener('message', function(e) {
-        console.log("recieved", e);
-        var msg = JSON.parse(e.data);
-        console.log(msg)
-        this.$scope.$apply();
-    }, false);
+
+  drawState(): void{
+    console.log(this.canvas);
+    /*this.canvas.nativeElement.
+    this.gameState.countries.forEach(country => {
+      let ship = this.canvas.nativeElement.insertAdjacentHTML('beforeend', '<area class="ship"/>');
+      ship.style.color = "";
+    });*/
+    const canvas: HTMLCanvasElement = document.querySelector("#mainGalaxyScreen");
+    // Initialize the GL context
+    const gl = canvas.getContext("webgl");
+
+    // Only continue if WebGL is available and working
+    if (gl === null) {
+      alert("Unable to initialize WebGL. Your browser or machine may not support it.");
+      return;
+    }
+
+    // Set clear color to black, fully opaque
+    gl.clearColor(0, 0, 0, 1.0);
+    // Clear the color buffer with specified clear color
+    gl.clear(gl.COLOR_BUFFER_BIT);
   }
 }
