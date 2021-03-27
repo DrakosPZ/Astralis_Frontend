@@ -2,6 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LogicGameState } from '../_shared/_models/logicGameState';
+declare var PIXI: any
 
 @Component({
   selector: 'app-screen',
@@ -15,7 +16,9 @@ export class ScreenComponent implements OnInit {
 
   eventSource = null;
   gameState: LogicGameState;
-  @ViewChild('#displayScreen') canvas: ElementRef;
+  @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
+
+  public pApp: any; // this will be our pixi application
 
   constructor(
     private gameService: GameService,
@@ -28,16 +31,24 @@ export class ScreenComponent implements OnInit {
       });
     }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngAfterViewInit(){
     this.getGameData();
 
+    let type = "WebGL";
+    if(!PIXI.utils.isWebGLSupported()){
+      type = "canvas";
+    }
+    PIXI.utils.sayHello(type);
+
     //To Test GameDrawing
-    this.drawState();
+    this.pApp = new PIXI.Application({ width: 800, height: 600 }); // this creates our pixi application
+
+    this.pixiContainer.nativeElement.appendChild(this.pApp.view); // this places our pixi application onto the viewable document
   }
 
-  ngOnDestroy(): void{
-
-  }
+  ngOnDestroy(): void{}
 
   getGameData(): void {
     //TODO: TAKE CARE OF closing connection when window closed
@@ -48,31 +59,7 @@ export class ScreenComponent implements OnInit {
       this.gameState = JSON.parse(message.data)
       console.log("Recieved Data");
       console.log(this.gameState);
-      this.drawState();
+      //ADD REDRAWING OF STATE
     });
-  }
-
-
-  drawState(): void{
-    console.log(this.canvas);
-    /*this.canvas.nativeElement.
-    this.gameState.countries.forEach(country => {
-      let ship = this.canvas.nativeElement.insertAdjacentHTML('beforeend', '<area class="ship"/>');
-      ship.style.color = "";
-    });*/
-    const canvas: HTMLCanvasElement = document.querySelector("#mainGalaxyScreen");
-    // Initialize the GL context
-    const gl = canvas.getContext("webgl");
-
-    // Only continue if WebGL is available and working
-    if (gl === null) {
-      alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-      return;
-    }
-
-    // Set clear color to black, fully opaque
-    gl.clearColor(0, 0, 0, 1.0);
-    // Clear the color buffer with specified clear color
-    gl.clear(gl.COLOR_BUFFER_BIT);
   }
 }
