@@ -20,6 +20,10 @@ export class ScreenComponent implements OnInit {
 
   public pApp: any; // this will be our pixi application
 
+  //Aliases
+  loader = PIXI.Loader;
+  Sprite = PIXI.Sprite;
+
   constructor(
     private gameService: GameService,
     private route: ActivatedRoute,
@@ -31,9 +35,15 @@ export class ScreenComponent implements OnInit {
       });
     }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("ngOnInit: ");
+    console.log(PIXI);
+    console.log(this.loader);
+    console.log(this.Sprite);
+  }
 
   ngAfterViewInit(){
+
     this.getGameData();
 
     let type = "WebGL";
@@ -46,6 +56,20 @@ export class ScreenComponent implements OnInit {
     this.pApp = new PIXI.Application({ width: 800, height: 600 }); // this creates our pixi application
 
     this.pixiContainer.nativeElement.appendChild(this.pApp.view); // this places our pixi application onto the viewable document
+    
+    //load an image and run the `setup` function when it's done
+    this.loader
+      .add("src/assets/_gameAssets/prototypeShip.png")
+      .load(setup);
+
+    //This `setup` function will run when the image has loaded
+    function setup() {
+      //Create the cat sprite
+      let cat = new PIXI.Sprite(this.loader.resources["src/assets/_gameAssets/prototypeShip.png"].texture);
+
+      //Add the cat to the stage
+      this.pApp.stage.addChild(cat);
+    }
   }
 
   ngOnDestroy(): void{}
