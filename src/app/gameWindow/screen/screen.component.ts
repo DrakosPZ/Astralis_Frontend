@@ -2,7 +2,8 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
 import { GameService } from 'src/app/_shared/_services/game/game.service';
 import { LogicGameState } from '../_shared/_models/logicGameState';
-declare var PIXI: any
+import { Loader, Sprite , Application, utils } from 'pixi.js'
+import { Ship } from '../_shared/_models/ship';
 
 @Component({
   selector: 'app-screen',
@@ -19,10 +20,8 @@ export class ScreenComponent implements OnInit {
   @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
 
   public pApp: any; // this will be our pixi application
-
-  //Aliases
-  loader = PIXI.Loader;
-  Sprite = PIXI.Sprite;
+  loader = new Loader(/*"src/assets/_gameAssets/"*/);
+  ships: {id, ship}[] = new Array();
 
   constructor(
     private gameService: GameService,
@@ -36,10 +35,6 @@ export class ScreenComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log("ngOnInit: ");
-    console.log(PIXI);
-    console.log(this.loader);
-    console.log(this.Sprite);
   }
 
   ngAfterViewInit(){
@@ -47,28 +42,24 @@ export class ScreenComponent implements OnInit {
     this.getGameData();
 
     let type = "WebGL";
-    if(!PIXI.utils.isWebGLSupported()){
+    if(!utils.isWebGLSupported()){
       type = "canvas";
     }
-    PIXI.utils.sayHello(type);
+    utils.sayHello(type);
 
     //To Test GameDrawing
-    this.pApp = new PIXI.Application({ width: 800, height: 600 }); // this creates our pixi application
+    this.pApp = new Application({ width: 1000, height: 1000 }); // this creates our pixi application
 
     this.pixiContainer.nativeElement.appendChild(this.pApp.view); // this places our pixi application onto the viewable document
     
     //load an image and run the `setup` function when it's done
     this.loader
-      .add("src/assets/_gameAssets/prototypeShip.png")
+      .add("assets/_gameAssets/prototypeShip.png")
       .load(setup);
 
     //This `setup` function will run when the image has loaded
     function setup() {
-      //Create the cat sprite
-      let cat = new PIXI.Sprite(this.loader.resources["src/assets/_gameAssets/prototypeShip.png"].texture);
-
-      //Add the cat to the stage
-      this.pApp.stage.addChild(cat);
+      console.log("Texture Load Completed");
     }
   }
 
@@ -83,6 +74,35 @@ export class ScreenComponent implements OnInit {
       this.gameState = JSON.parse(message.data)
       console.log("Recieved Data");
       console.log(this.gameState);
+
+      this.gameState.countries.forEach( country => {
+        let ship;
+        let shipSetFlag = false;
+
+        for(let i = 0; i < this.ships.length; i++){
+          console.log("check if present");
+          console.log(this.ships[i]);
+          console.log(country.ship);
+          if(this.ships[i].id === country.ship.id){
+            ship = this.ships[i].ship;
+            shipSetFlag = true;
+            break;
+          }
+        }
+        if(!shipSetFlag){
+          ship = new Sprite(this.loader.resources["assets/_gameAssets/prototypeShip.png"].texture);
+          ship.anchor.x = 0.5;
+          ship.anchor.y = 0.5;
+          this.ships.push({
+            id: country.ship.id, 
+            ship: ship
+          })
+        }
+
+        ship.position.set( country.ship.currentPosition.x + 500, country.ship.currentPosition.y + 500 );
+        
+        this.pApp.stage.addChild(ship);
+      });
       //ADD REDRAWING OF STATE
     });
   }

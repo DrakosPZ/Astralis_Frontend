@@ -1,0 +1,14 @@
+diff --git a/node_modules/mini-signals/typings/mini-signals.d.ts b/node_modules/mini-signals/typings/mini-signals.d.ts
+index 7214e1d..c964841 100644
+--- a/node_modules/mini-signals/typings/mini-signals.d.ts
++++ b/node_modules/mini-signals/typings/mini-signals.d.ts
+@@ -16,5 +16,7 @@ declare module "mini-signals" {
+ 		detachAll(): MiniSignal;
+ 	}
+ 
+-	export = MiniSignal;
++	//temporarly removed to be able to work with pixi
++	//export = MiniSignal;
++
+ }
+\ No newline at end of file
