@@ -6,6 +6,7 @@ export class Country {
     colour: string;
 
     ship: Ship;
+    owner: string;
 
     public constructor(init?:Partial<Country>) {
         Object.assign(this, init);
