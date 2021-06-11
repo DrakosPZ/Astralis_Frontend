@@ -5,12 +5,28 @@ import { LogicGameState } from '../_shared/_models/logicGameState';
 import { Loader, Sprite , Application, utils } from 'pixi.js'
 import { Ship } from '../_shared/_models/ship';
 import { GameRenderer } from '../_shared/_renderers/GameRenderer';
-import * as Stomp from 'stompjs';
+import * as Stomp from '@stomp/stompjs';
 
 const SOCKET_URL = "http://localhost:8080/runningGame";
 const GREETING = "/webgamesocket";
 const ERROR = "/errors";
 const RECEIVING_ENDPOINT = "/topic/reply/";
+/**
+ * Stomp instance for web sockets.
+ */
+ const client = new Stomp.Client({
+  brokerURL: SOCKET_URL + GREETING,
+  /*connectHeaders: {
+    login: 'user',
+    passcode: 'password',
+  },
+  debug: function (str) {
+    console.log(str);
+  },*/
+  reconnectDelay: 5000,
+  heartbeatIncoming: 4000,
+  heartbeatOutgoing: 4000,
+});
 
 @Component({
   selector: 'app-screen',
@@ -25,6 +41,7 @@ export class ScreenComponent implements OnInit {
 
   eventSource = null;
   gameState: LogicGameState;
+
   @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
 
 
@@ -45,6 +62,7 @@ export class ScreenComponent implements OnInit {
 
   ngAfterViewInit(){
     this.gameRenderer.init(this.pixiContainer);
+    this.setUpStompClient();
     
     this.getGameData();
   }
@@ -64,89 +82,63 @@ export class ScreenComponent implements OnInit {
     });
   }
 
-  
+
     /**
-     * REPLACE WITH ONE DOCUMENTATION
-     * Attempts to connect through web sockets with the server as soon as the initial form with the username is submitted. Further, it also
-     * subscribes to the server through the channel containing the socket-id. The server sends a "start" message the first time. From the
-     * next steps, it sends the details of the opponent player turn. This is used to color the battle board with appropriate colors. If
-     * the game is over, the server also sends that info here. Refer to the processMessageFromClient() api in WebSocketController in the
-     * server. A sample response can be of the type:
-     *
-     * @example
-     * To check an example input JSON object, refer to the README tab above.
+     * Set up Stomp Client
      */
-    connect() {
-      const socket = new WebSocket( SOCKET_URL + GREETING );
-      this.ws = Stomp.over(socket);
-      const that = this;
-      this.ws.connect({}, frame => {
-          that.ws.subscribe(ERROR, message => {
-              alert('Error ' + message.body);
-          });
-          that.ws.subscribe(RECEIVING_ENDPOINT + this.socketUrl, message => {
-              let tempdata;
-              let tempUserNameObject;
-              if (message.body === 'start') {
-                  setTimeout(() => {
-                      this.battleService.getPlayer2Id(this.socketUrl).subscribe(
-                          data => {
-                              tempdata = data;
-                              this.opponentUserId = tempdata.userId;
-                          }, error1 => {
-                              console.error(error1);
-                          }, () => {
-                                  this.battleService.getUserName(this.opponentUserId).subscribe(data => {
-                                      tempUserNameObject = data;
-                                  }, error => {
-                                      console.error(error);
-                                  }, () => {
-                                      this.opponentUserName = tempUserNameObject.userName;
-                                  });
-                          });
-                      }, 1500);
+    setUpStompClient(): void{
+    
+        client.onConnect = function (frame) {
+            // Do something, all subscribes must be done is this callback
+            // This is needed because this will be executed after a (re)connect
+        };
+      
+        client.onStompError = function (frame) {
+            // Will be invoked in case of error encountered at Broker
+            // Bad login/passcode typically will cause an error
+            // Complaint brokers will set `message` header with a brief message. Body may contain details.
+            // Compliant brokers will terminate the connection after any error
+            console.log('Broker reported error: ' + frame.headers['message']);
+            console.log('Additional details: ' + frame.body);
+        };
 
-              } else {
-                  const stringInfo = JSON.parse(message.body);
-                  if (stringInfo.turnBy == 'p1') {
-                      if (stringInfo.isContainsShip == 'true') {
-                          this.ourTurn = false;
-                          BattleboardComponent.highlightCells(['their' + stringInfo.attackedAt], 'attackedWithShip');
-                      }
-                  }
-                  if (stringInfo.turnBy == 'p2') {
-                      this.ourTurn = true;
-                      if (stringInfo.isContainsShip == 'true') {
-                          BattleboardComponent.highlightCells(['my' + stringInfo.attackedAt], 'attackedWithShip');
-                      } else {
-                          BattleboardComponent.highlightCells(['my' + stringInfo.attackedAt], 'attacked');
-                      }
-                  }
-                  if (stringInfo.winningMove == 'true') {
-                      this.gameover = (stringInfo.winningMove == 'true');
-                      console.log('Winning Move: ' + stringInfo.winningMove);
-                      this.ourTurn = false;
-                      if (stringInfo.turnBy == 'p1') {
-                          this.currentMessage = 'Congratulations, You Won! Refresh to play again.';
-                      } else {
-                          this.currentMessage = 'Bad Luck! ' + this.opponentUserName + ' won! Refresh to play again.';
-                      }
+        //Hook up to recieving endpoint
+        client.subscribe(RECEIVING_ENDPOINT, this.callback);
 
-                  }
-              }
-          });
-      }, error => {
-          this.overlayOn();
-      });
-  }
 
-  /**
-   * Used to disconnect the web sockets from the server. Never used.
-   */
-  disconnect() {
-      if (this.ws != null) {
-          this.ws.ws.close();
-      }
-      console.log('Disconnected');
-  }
+        client.activate();
+
+    }
+    /**
+     * send Messages TODO: Filler
+     */
+    clientSend(): void{
+        client.publish({ destination: '/topic/general', body: 'Hello world' });
+
+        // There is an option to skip content length header
+        client.publish({
+        destination: '/topic/general',
+        body: 'Hello world',
+        skipContentLengthHeader: true,
+        });
+
+        // Additional headers
+        client.publish({
+        destination: '/topic/general',
+        body: 'Hello world',
+        headers: { priority: '9' },
+        });
+    }
+
+    /**
+     * handle recieved messages TODO: Add implementation
+     */
+    callback = function (message) {
+            if (message.body) {
+                alert('got message with body ' + message.body);
+            } else {
+                alert('got empty message');
+            }
+        };
+    
 }
