@@ -1,11 +1,9 @@
-import * as Stomp from '@stomp/stompjs';
 import { Client } from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 
-const SOCKET_URL = "http://localhost:8080/ws";
+const SOCKET_URL = "ws://localhost:8080/ws";
 const ERROR = "/errors";
 const RECEIVING_ENDPOINT = "/topic/gameUpdates/";
 const SENDING_ENDPOINT = "/app/message/";
@@ -16,13 +14,17 @@ const SENDING_ENDPOINT = "/app/message/";
   })
 export class WebSocketService {
 
-    topic: string = "/topic/greetings";
     gameID: string = "";
     stompClient: any;
     returnedMessages: Subject<string>  = new Subject<string>();
     
     constructor(){}
 
+    /**
+     * TODO: ADD COMMENTARY
+     * 
+     * @param gameID 
+     */
     _setUp(gameID: string){
 
         this.gameID = gameID;
@@ -32,6 +34,9 @@ export class WebSocketService {
 
     }
 
+    /**
+     * TODO: ADD COMMENTARY
+     */
     _configure(){
 
         this.stompClient = new Client();
@@ -54,23 +59,21 @@ export class WebSocketService {
             },
             // Helps during debugging, remove in production
             debug: (str) => {
-              console.log(new Date(), str);
+              console.log(str);
             }
           });
 
     }
 
+    /**
+     * 
+     * TODO: ADD COMMENTARY
+     */
     _connect() {
         
         this.stompClient.subscribe(RECEIVING_ENDPOINT + this.gameID, message => {
-            alert(message.body);
             this.onMessageReceived(message);
         });
-        
-        this.stompClient.onConnect = function (frame) {
-            // Do something, all subscribes must be done is this callback
-            // This is needed because this will be executed after a (re)connect
-        };
 
         this.stompClient.onStompError = function (frame) {
             // Will be invoked in case of error encountered at Broker
@@ -83,7 +86,11 @@ export class WebSocketService {
         };
 
     };
-
+    
+    /**
+    * 
+    * TODO: ADD COMMENTARY
+    */
     _disconnect() {
 
         if (this.stompClient !== null) {
@@ -93,6 +100,11 @@ export class WebSocketService {
 
     }
 
+    
+    /**
+    * 
+    * TODO: ADD COMMENTARY
+    */
     // on error, schedule a reconnection attempt
     _onError() {
         console.log("Error -> Specify Error Behaviour");
@@ -104,11 +116,20 @@ export class WebSocketService {
 	 */
     _send(message) {
 
+
+
         console.log("calling logout api via web socket: " + message);
-        this.stompClient.publish({ destination: SENDING_ENDPOINT, body: message });
+        this.stompClient.publish({ destination: SENDING_ENDPOINT + this.gameID, body: message });
 
     }
 
+    
+    /**
+    * 
+    * TODO: ADD COMMENTARY
+    * @param message 
+    * @returns 
+    */
     onMessageReceived(message): Observable<string> {
         console.log("Message Recieved from Server :: " + message);
         
