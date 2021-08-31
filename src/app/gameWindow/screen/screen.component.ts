@@ -9,6 +9,7 @@ import { Action } from '../_shared/_models/webModels/action';
 import { Position } from '../_shared/_models/position';
 import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
+import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
 
 @Component({
   selector: 'app-screen',
@@ -27,15 +28,9 @@ export class ScreenComponent implements OnInit {
 
   client: Client;
 
-  shipAPos1 = new Position({x: 200, y: 200});   // => false
-  shipAPos2 = new Position({x: 100, y: 100});   // => True from server start target
-  shipAState = true;
-  shipBPos1 = new Position({x: -200, y: -200});   // => false
-  shipBPos2 = new Position({x: -100, y: -100});   // => True from server start target
-  shipBState = true;
-
   constructor(
     private gameRenderer: GameRenderer,
+    private cursorKeeper: CursorKeeper,
     private route: ActivatedRoute,
     private webSocketAPI: WebSocketService
   ) { 
@@ -58,7 +53,8 @@ export class ScreenComponent implements OnInit {
    * TODO: ADD COMMENTARY
    */
   ngAfterViewInit(){
-    this.gameRenderer.init(this.pixiContainer);
+    this.cursorKeeper.setUp(this);
+    this.gameRenderer.init(this.pixiContainer, this.cursorKeeper);
     this.webSocketAPI._setUp(this.gameID);
     this.webSocketAPI.onMessageReceived("").subscribe((message: any) => this.handleMessage(message.body));
   }
@@ -115,43 +111,27 @@ export class ScreenComponent implements OnInit {
     
 
   //Test methods
-  moveShip(shipID: number){
+  moveShip(newTarget: Position){
+    let shipID = 1;
     let message: MessageSpecialized;
     if(shipID == 1){
-      let position: Position;
-      this.shipAState = !this.shipAState;
-      if( this.shipAState == true){
-        position = this.shipAPos2;  
-      } else {
-        position = this.shipAPos1;  
-      }
-
       message = new MessageSpecialized({
             gameID: this.gameID, 
             userID: this.userID, 
             action: Action.MOVE, 
             specializedObject: 
-                  new Moveship({shipId: 2, newGoal: position})
+                  new Moveship({shipId: 2, newGoal: newTarget})
       });
 
     }
 
     if(shipID == 2){
-
-      let position: Position;
-      this.shipBState = !this.shipBState;
-      if( this.shipBState == true){
-        position = this.shipBPos2;  
-      } else {
-        position = this.shipBPos1;  
-      }
-
       message = new MessageSpecialized({
             gameID: this.gameID, 
             userID: this.userID, 
             action: Action.MOVE, 
             specializedObject: 
-                  new Moveship({shipId: 4, newGoal: position})
+                  new Moveship({shipId: 4, newGoal: newTarget})
       });
 
     }

@@ -59,7 +59,7 @@ export class WebSocketService {
             },
             // Helps during debugging, remove in production
             debug: (str) => {
-              console.log(str);
+              //console.log(str);
             }
           });
 
@@ -96,7 +96,7 @@ export class WebSocketService {
         if (this.stompClient !== null) {
             this.stompClient.disconnect();
         }
-        console.log("Disconnected");
+        //console.log("Disconnected");
 
     }
 
@@ -118,7 +118,7 @@ export class WebSocketService {
 
 
 
-        console.log("calling logout api via web socket: " + message);
+        //console.log("calling logout api via web socket: " + message);
         this.stompClient.publish({ destination: SENDING_ENDPOINT + this.gameID, body: message });
 
     }
@@ -131,7 +131,7 @@ export class WebSocketService {
     * @returns 
     */
     onMessageReceived(message): Observable<string> {
-        console.log("Message Recieved from Server :: " + message);
+        //console.log("Message Recieved from Server :: " + message);
         
         this.returnedMessages.next(message);
         return this.returnedMessages.asObservable();
