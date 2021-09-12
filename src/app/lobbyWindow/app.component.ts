@@ -1,7 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
 import { LoginService } from 'src/app/_shared/_services/login/login.service';
-import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +12,7 @@ export class AppComponent {
 
   private _viewportQueryListener: () => void;
 
-  constructor(
-              private loginservice: LoginService) {
+  constructor(private loginService: LoginService) {
   }
 
   ngOnDestroy(): void {
@@ -23,10 +20,10 @@ export class AppComponent {
   }
 
   isLoggedIn(): boolean{
-    return this.loginservice.isLoggedIn();
+    return this.loginService.isLoggedIn();
   }
 
   logUserOut(){
-    this.loginservice.logout();
+    this.loginService.logout();
   }
 }

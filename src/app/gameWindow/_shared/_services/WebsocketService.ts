@@ -94,9 +94,9 @@ export class WebSocketService {
     _disconnect() {
 
         if (this.stompClient !== null) {
-            this.stompClient.disconnect();
+            this.stompClient.deactivate();
         }
-        //console.log("Disconnected");
+        console.log("Disconnected");
 
     }
 

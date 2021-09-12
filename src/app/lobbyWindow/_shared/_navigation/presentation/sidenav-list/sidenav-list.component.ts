@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
 
 @Component({
   selector: 'app-sidenav-list',
@@ -8,11 +9,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class SidenavListComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
 
-  constructor() { }
+  constructor(public navbarService: NavbarService) { }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
   
   public onSidenavClose = () => {
     this.sidenavClose.emit();

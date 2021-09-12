@@ -10,6 +10,7 @@ import { Position } from '../_shared/_models/position';
 import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
 import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
+import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
 
 @Component({
   selector: 'app-screen',
@@ -29,11 +30,13 @@ export class ScreenComponent implements OnInit {
   client: Client;
 
   constructor(
+    private navbarService: NavbarService,
     private gameRenderer: GameRenderer,
     private cursorKeeper: CursorKeeper,
     private route: ActivatedRoute,
     private webSocketAPI: WebSocketService
   ) { 
+    this.navbarService.hide();
     this.route.paramMap.subscribe( params => {
       let ids = params.get('ids').split('&')
       this.userID = ids[0];
@@ -47,7 +50,6 @@ export class ScreenComponent implements OnInit {
    */
   ngOnInit(): void {
   }
-
   /**
    * 
    * TODO: ADD COMMENTARY
@@ -62,8 +64,11 @@ export class ScreenComponent implements OnInit {
   /**
    * 
    * TODO: ADD COMMENTARY
+   * TODO: ADD ALL THINGS TO BE CLEANED UP
    */
-  ngOnDestroy(): void{}
+  ngOnDestroy(): void{
+    this.disconnect();
+  }
 
 
   //new Attempt
