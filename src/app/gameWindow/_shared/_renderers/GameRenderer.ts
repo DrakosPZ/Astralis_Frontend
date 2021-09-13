@@ -72,7 +72,7 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
       this.pApp.stage.on("pointerdown", () => this.clickCursor());
       //this.pApp.stage.on("pointerup", () => {console.log("pointerup")});
       //this.pApp.stage.on("pointertap", () => {console.log("pointertap")});
-      }
+    }
 
     private moveCursor(){
       let pos = 
@@ -82,6 +82,13 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
     private clickCursor(){
       this.cursor.cursorClicked();
+    }
+
+    /**
+     * CleanUp entire Stage and all loaded textures
+     */
+    public cleanUp(){
+      this.pApp.destroy(true, true);
     }
 
 

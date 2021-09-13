@@ -18,6 +18,8 @@ export class WebSocketService {
     stompClient: any;
     returnedMessages: Subject<string>  = new Subject<string>();
     
+    receivingSubscription;
+
     constructor(){}
 
     /**
@@ -71,7 +73,7 @@ export class WebSocketService {
      */
     _connect() {
         
-        this.stompClient.subscribe(RECEIVING_ENDPOINT + this.gameID, message => {
+        this.receivingSubscription = this.stompClient.subscribe(RECEIVING_ENDPOINT + this.gameID, message => {
             this.onMessageReceived(message);
         });
 
@@ -92,12 +94,15 @@ export class WebSocketService {
     * TODO: ADD COMMENTARY
     */
     _disconnect() {
-
         if (this.stompClient !== null) {
+            if(this.receivingSubscription !== null){
+                this.receivingSubscription.unsubscribe();
+                this.receivingSubscription = null;
+            }
             this.stompClient.deactivate();
+            this.stompClient = null;
         }
         console.log("Disconnected");
-
     }
 
     

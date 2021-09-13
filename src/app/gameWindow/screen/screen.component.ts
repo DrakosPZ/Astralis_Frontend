@@ -11,6 +11,7 @@ import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
 import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
 import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-screen',
@@ -29,6 +30,10 @@ export class ScreenComponent implements OnInit {
 
   client: Client;
 
+  //For CleanUp
+  paramMapSubscription;
+  onMessageReceivedSubscription;
+
   constructor(
     private navbarService: NavbarService,
     private gameRenderer: GameRenderer,
@@ -37,11 +42,12 @@ export class ScreenComponent implements OnInit {
     private webSocketAPI: WebSocketService
   ) { 
     this.navbarService.hide();
-    this.route.paramMap.subscribe( params => {
-      let ids = params.get('ids').split('&')
-      this.userID = ids[0];
-      this.gameID = ids[1];
-    });
+    this.paramMapSubscription =
+              this.route.paramMap .subscribe( params => {
+                let ids = params.get('ids').split('&')
+                this.userID = ids[0];
+                this.gameID = ids[1];
+              });
   }
 
   /**
@@ -58,7 +64,11 @@ export class ScreenComponent implements OnInit {
     this.cursorKeeper.setUp(this);
     this.gameRenderer.init(this.pixiContainer, this.cursorKeeper);
     this.webSocketAPI._setUp(this.gameID);
-    this.webSocketAPI.onMessageReceived("").subscribe((message: any) => this.handleMessage(message.body));
+    this.onMessageReceivedSubscription =
+                this.webSocketAPI.onMessageReceived("")
+                        .subscribe((message: any) => 
+                              this.handleMessage(message.body)
+                          );
   }
 
   /**
@@ -67,17 +77,32 @@ export class ScreenComponent implements OnInit {
    * TODO: ADD ALL THINGS TO BE CLEANED UP
    */
   ngOnDestroy(): void{
-    this.disconnect();
+    if(this.paramMapSubscription !== null){
+      this.paramMapSubscription.unsubscribe();
+      this.paramMapSubscription = null;
+    }
+    if(this.onMessageReceivedSubscription !== null){
+      this.onMessageReceivedSubscription.unsubscribe();
+      this.onMessageReceivedSubscription = null;
+    }
+    this.disconnectWebsocket();
+    this.cleanGraphics();
   }
 
-
-  //new Attempt
   /**
    * 
    * TODO: ADD COMMENTARY
    */
-  disconnect(){
+  disconnectWebsocket(){
     this.webSocketAPI._disconnect();
+  }
+
+  /**
+   * 
+   * TODO: ADD COMMENTARY
+   */
+  cleanGraphics(){
+    this.gameRenderer.cleanUp();
   }
 
   //WebSocket Local Handling Methods
