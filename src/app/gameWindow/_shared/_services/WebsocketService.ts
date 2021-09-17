@@ -15,6 +15,7 @@ const SENDING_ENDPOINT = "/app/message/";
 export class WebSocketService {
 
     gameID: string = "";
+    userToken: string = "";
     stompClient: any;
     returnedMessages: Subject<string>  = new Subject<string>();
     
@@ -27,9 +28,10 @@ export class WebSocketService {
      * 
      * @param gameID 
      */
-    _setUp(gameID: string){
+    _setUp(gameID: string, userToken: string){
 
         this.gameID = gameID;
+        this.userToken = userToken;
         this._configure();
 
         this.stompClient.activate();
@@ -46,11 +48,12 @@ export class WebSocketService {
         this.stompClient.configure({
             brokerURL: SOCKET_URL,
 
-            /*
+            
             connectHeaders: {
               login: 'user',
               passcode: 'password',
-            },*/
+              'Authorization': 'Bearer Bearer ' + this.userToken
+            },
 
             reconnectDelay: 5000,
             heartbeatIncoming: 4000,
@@ -75,7 +78,9 @@ export class WebSocketService {
         
         this.receivingSubscription = this.stompClient.subscribe(RECEIVING_ENDPOINT + this.gameID, message => {
             this.onMessageReceived(message);
-        });
+        }, {
+            'Authorization': "Bearer Bearer " + this.userToken
+          });
 
         this.stompClient.onStompError = function (frame) {
             // Will be invoked in case of error encountered at Broker
@@ -101,6 +106,12 @@ export class WebSocketService {
             }
             this.stompClient.deactivate();
             this.stompClient = null;
+        }
+        if(this.gameID !== ""){
+            this.gameID = "";
+        }
+        if(this.userToken !== ""){
+            this.userToken = "";
         }
         console.log("Disconnected");
     }

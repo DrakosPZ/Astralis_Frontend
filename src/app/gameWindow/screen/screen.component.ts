@@ -11,7 +11,6 @@ import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
 import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
 import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-screen',
@@ -23,6 +22,7 @@ export class ScreenComponent implements OnInit {
   id: string;
   userID: string;
   gameID: string;
+  token: string;
 
   gameState: LogicGameState;
 
@@ -47,6 +47,7 @@ export class ScreenComponent implements OnInit {
                 let ids = params.get('ids').split('&')
                 this.userID = ids[0];
                 this.gameID = ids[1];
+                this.token = ids[2];
               });
   }
 
@@ -63,7 +64,7 @@ export class ScreenComponent implements OnInit {
   ngAfterViewInit(){
     this.cursorKeeper.setUp(this);
     this.gameRenderer.init(this.pixiContainer, this.cursorKeeper);
-    this.webSocketAPI._setUp(this.gameID);
+    this.webSocketAPI._setUp(this.gameID, this.token);
     this.onMessageReceivedSubscription =
                 this.webSocketAPI.onMessageReceived("")
                         .subscribe((message: any) => 
@@ -84,6 +85,15 @@ export class ScreenComponent implements OnInit {
     if(this.onMessageReceivedSubscription !== null){
       this.onMessageReceivedSubscription.unsubscribe();
       this.onMessageReceivedSubscription = null;
+    }
+    if(this.userID !== null){
+      this.userID = null
+    }
+    if(this.gameID !== null){
+      this.gameID = null
+    }
+    if(this.token !== null){
+      this.token = null
     }
     this.disconnectWebsocket();
     this.cleanGraphics();

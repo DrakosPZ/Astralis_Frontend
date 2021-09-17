@@ -213,7 +213,7 @@ export class GamesComponent implements OnInit {
   }
 
   openGamePopout(game: Game) {
-    window.open("Game/" + this.currentUser.identifier + "&" + game.identifier, "_blank")
+    window.open("Game/" + this.currentUser.identifier + "&" + game.identifier + "&" + this.removeBearerFromToken(this.loginService.getToken()), "_blank")
   }
 
 
@@ -339,6 +339,9 @@ export class GamesComponent implements OnInit {
           .pipe(first()).subscribe(games =>  this.joinedGames = games);
   }
 
+  removeBearerFromToken(rawText: string): string{
+    return rawText.substr(rawText.indexOf(" ") + 1);
+  }
 
 
   
