@@ -48,6 +48,8 @@ export class GameInspectionComponent implements OnInit {
   }
 
   checkIfAlreadyIn(): boolean{
+
+    //currently the same as the one below, maybe this is supposed to check if they created an empire or such in the game?
     let inGame = false;
     this.displayed.userGameStates.forEach(
       connection => {

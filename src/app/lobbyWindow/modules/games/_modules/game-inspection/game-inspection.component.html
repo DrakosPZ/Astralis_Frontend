@@ -75,15 +75,15 @@
         </div>
 
         <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="10px"> 
-            <button mat-raised-button *ngIf="checkIfAlreadyIn()" [disabled]="!canLoadGame()" (click)="callLoadGame()"> 
+            <button mat-raised-button *ngIf="checkIfAlreadyIn() && userInGame()" [disabled]="!canLoadGame()" (click)="callLoadGame()"> 
                 <h3>Load Game</h3>
             </button>
 
-            <button mat-raised-button *ngIf="!checkIfAlreadyIn()" (click)="callCreateCountry()"> 
+            <button mat-raised-button *ngIf="!checkIfAlreadyIn() && userInGame()" (click)="callCreateCountry()"> 
                 <h3>Create Country</h3>
             </button>
 
-            <button mat-raised-button *ngIf="!checkIfAlreadyIn()" (click)="callJoinCountry()"> 
+            <button mat-raised-button *ngIf="!checkIfAlreadyIn() && userInGame()" (click)="callJoinCountry()"> 
                 <h3>Join Country</h3>
             </button>
         </div>
