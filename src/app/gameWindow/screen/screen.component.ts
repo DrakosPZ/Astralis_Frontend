@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogicGameState } from '../_shared/_models/logicGameState';
 import { GameRenderer } from '../_shared/_renderers/GameRenderer';
-import { Client } from '@stomp/stompjs';
 import { WebSocketService } from '../_shared/_services/WebsocketService';
 import { Message } from '../_shared/_models/webModels/Message';
 import { Action } from '../_shared/_models/webModels/action';
@@ -11,6 +10,8 @@ import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
 import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
 import { NavbarService } from 'src/app/_shared/_services/navbar/navbar.service';
+import { GameStateUpdate } from '../_shared/_models/webModels/subTypes/gameStateUpdate';
+import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 @Component({
   selector: 'app-screen',
@@ -27,8 +28,6 @@ export class ScreenComponent implements OnInit {
   gameState: LogicGameState;
 
   @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
-
-  client: Client;
 
   //For CleanUp
   paramMapSubscription;
@@ -140,9 +139,47 @@ export class ScreenComponent implements OnInit {
    */
   handleMessage(message){
     try{
-      let recieved =  new LogicGameState(JSON.parse(message));
+      let received =  new Message(JSON.parse(message));
+    
+      switch(received.action){
+          case Action.GAMEUPDATE: {
+              let gameStateUpdate: GameStateUpdate = new GameStateUpdate(JSON.parse(received.specializedObject));
+              this.receivedGameState(gameStateUpdate.logicGameState);
+              break;
+          }
+          case Action.CLOSEDGAME: {
+              console.log("Closed Game Received");
+              this.webSocketAPI.setStatus(GameStatus.CLOSED);
+              //TODO: ADD Visual Display for when game Closed
+              break;
+          }
+          case Action.DISCONNECTED: {
+              console.log("Disconnected Game");
+              //this.disconnectWebsocket();
+              if(received.userID == this.userID && 
+                  received.gameID == this.gameID){
+                window.close();
+                //TODO: ADD Visual Display for when game Disconnecte
+              }
+              break;
+          }
+      }
+    } catch(e){
+      console.error(e);
+    }
+  }
+
+  /**
+   * 
+   * TODO: ADD COMMENTARY
+   * @param logicGameState 
+   * */
+  receivedGameState(logicGameState: LogicGameState){
+    try{
+      let recieved =  logicGameState
       this.gameState = recieved;
       console.log(this.gameState);
+      this.webSocketAPI.setStatus(this.gameState.gameStatus);
       this.gameRenderer.drawState(recieved);
     } catch(e){
       console.error(e);

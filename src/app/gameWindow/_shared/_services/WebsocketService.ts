@@ -1,6 +1,7 @@
 import { Client } from '@stomp/stompjs';
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 
 const SOCKET_URL = "ws://localhost:8080/ws";
@@ -16,8 +17,10 @@ export class WebSocketService {
 
     gameID: string = "";
     userToken: string = "";
+    status: GameStatus = GameStatus.CLOSED;
     stompClient: any;
     returnedMessages: Subject<string>  = new Subject<string>();
+    
     
     receivingSubscription;
 
@@ -113,6 +116,7 @@ export class WebSocketService {
         if(this.userToken !== ""){
             this.userToken = "";
         }
+        this.setStatus(GameStatus.CLOSED);
         console.log("Disconnected");
     }
 
@@ -131,15 +135,15 @@ export class WebSocketService {
 	 * @param {*} message 
 	 */
     _send(message) {
-
-
-
         //console.log("calling logout api via web socket: " + message);
-        this.stompClient.publish({ destination: SENDING_ENDPOINT + this.gameID, body: message });
-
+        if(this.status === GameStatus.RUNNING){ // Only when running game actions can be taken
+            this.stompClient.publish({ destination: SENDING_ENDPOINT + this.gameID, body: message });
+        }
+        else{
+            console.log(this.status);
+        }
     }
 
-    
     /**
     * 
     * TODO: ADD COMMENTARY
@@ -148,8 +152,15 @@ export class WebSocketService {
     */
     onMessageReceived(message): Observable<string> {
         //console.log("Message Recieved from Server :: " + message);
-        
         this.returnedMessages.next(message);
         return this.returnedMessages.asObservable();
+    }
+
+    /**
+     * TODO Add documentation
+     * @param status 
+     */
+    setStatus(status: GameStatus){
+        this.status = status;
     }
 }
