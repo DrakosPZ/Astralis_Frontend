@@ -16,7 +16,7 @@ const LOGIN = "/login";
 const LOGOUT = "/logout";
 const AFTER_LOGIN = "/afterLogin";
 
-const GAME_URL = "/gamestate";
+const GAME_URL = "/gamelobby";
 const JOINEDGAME_URL = "/joinedGame";
 const STARTGAME_URL = "/createNewGame";
 const STARTGAMELOBBY_URL = "/startGame";

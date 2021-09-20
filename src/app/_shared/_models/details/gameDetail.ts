@@ -7,7 +7,7 @@ export class GameDetail {
     description: string;
     image: string;
     status: GameStatus;
-    userGameStates: UserGameDetail[];
+    userGameLobbies: UserGameDetail[];
 
     public constructor(init?:Partial<GameDetail>) {
         Object.assign(this, init);

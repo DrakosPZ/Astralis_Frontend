@@ -39,7 +39,7 @@ export class GameInspectionComponent implements OnInit {
   //--------------------Caller Method
   getAdmins(): UserGameDetail[]{
     let newList = new Array(); 
-    this.displayed.userGameStates.forEach(element => {
+    this.displayed.userGameLobbies.forEach(element => {
       if(element.gameRole != GameRole.PLAYER){
         newList.push(new UserGameDetail(element));
       }
@@ -51,7 +51,7 @@ export class GameInspectionComponent implements OnInit {
 
     //currently the same as the one below, maybe this is supposed to check if they created an empire or such in the game?
     let inGame = false;
-    this.displayed.userGameStates.forEach(
+    this.displayed.userGameLobbies.forEach(
       connection => {
         if(connection.user.identifier !== this.currentUser.identifier){
           inGame = true;
@@ -64,7 +64,7 @@ export class GameInspectionComponent implements OnInit {
 
   userInGame(): boolean{
     let inGame = false;
-    this.displayed.userGameStates.forEach(
+    this.displayed.userGameLobbies.forEach(
       connection => {
         if(connection.user.identifier === this.currentUser.identifier){
           inGame = true;
@@ -105,8 +105,7 @@ export class GameInspectionComponent implements OnInit {
 
   canStoreGame(): boolean{
     if(this.displayed.status === GameStatus.RUNNING || 
-       this.displayed.status === GameStatus.PAUSED ||
-       this.displayed.status === GameStatus.CLOSED){
+       this.displayed.status === GameStatus.PAUSED){
       return true;
     }
     return false;

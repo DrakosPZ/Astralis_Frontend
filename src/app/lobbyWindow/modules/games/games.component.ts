@@ -125,7 +125,7 @@ export class GamesComponent implements OnInit {
 
   userInGame(pickedGame: Game): boolean{
     let inGame = false;
-    pickedGame.userGameStates.forEach(
+    pickedGame.userGameLobbies.forEach(
       connection => {
         if(connection.user === this.currentUser.identifier){
           inGame = true;

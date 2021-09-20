@@ -1,7 +1,7 @@
 import { Game } from '../game';
 
 export class GameUserIDSet {
-    gameState: Game;
+    gameLobby: Game;
     userIdentifier: string;
 
     public constructor(init?:Partial<GameUserIDSet>) {

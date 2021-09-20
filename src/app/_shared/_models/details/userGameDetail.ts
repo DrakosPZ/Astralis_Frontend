@@ -3,7 +3,7 @@ import { User } from '../user';
 
 export class UserGameDetail {
     user: User;
-    gameState: string;
+    gameLobby: string;
     gameRole: GameRole;
 
     public constructor(init?:Partial<UserGameDetail>) {

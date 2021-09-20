@@ -21,7 +21,7 @@ export class GameService extends UniversalService{
     return this.http.get<Game[]>(this.joinedGamesURL() + identifier, this.httpOptions)
     .pipe(
       map((data: any) => {
-        return data._embedded.gameStateDTOList as Game[];
+        return data._embedded.gameLobbyDTOList as Game[];
       })
     )
     .pipe(
@@ -35,7 +35,7 @@ export class GameService extends UniversalService{
     .pipe(
       map((data: any) => {
         console.log(data);
-        return data._embedded.gameStateDTOList as Game[];
+        return data._embedded.gameLobbyDTOList as Game[];
       })
     )
     .pipe(
@@ -49,7 +49,7 @@ export class GameService extends UniversalService{
     .pipe(
       map((data: any) => {
         console.log(data);
-        return data._embedded.gameStateDTOList as Game[];
+        return data._embedded.gameLobbyDTOList as Game[];
       })
     )
     .pipe(
@@ -92,7 +92,7 @@ export class GameService extends UniversalService{
 
   startGame(game: Game, identifier: string): Observable<Game[]>{
     const body = 
-      new GameUserIDSet({gameState: game, userIdentifier: identifier});
+      new GameUserIDSet({gameLobby: game, userIdentifier: identifier});
 
     return this.http.post<Game[]>(this.startNewGameURL(), body, this.httpOptions).pipe(
       tap((gotGames: Game[]) => this.log(`returned Game: w/ ${gotGames}`)),

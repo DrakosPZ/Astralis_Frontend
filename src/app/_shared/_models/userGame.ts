@@ -2,7 +2,7 @@ import { GameRole } from './gameRole';
 
 export class UserGame {
     user: string;
-    gameState: string;
+    gameLobbies: string;
     gameRole: GameRole;
 
     public constructor(init?:Partial<UserGame>) {

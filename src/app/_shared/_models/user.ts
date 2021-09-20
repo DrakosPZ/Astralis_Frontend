@@ -7,7 +7,7 @@ export class User {
     nickName: string;
     role: UserRole;
     loginInformation: LoginInformation
-    userGameStates: UserGame[];
+    userGameLobbies: UserGame[];
 
     public constructor(init?:Partial<User>) {
         Object.assign(this, init);
