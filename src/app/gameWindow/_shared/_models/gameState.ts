@@ -1,7 +1,7 @@
 import { GameStatus } from "src/app/_shared/_models/gameStatus";
 import { Country } from "./country";
 
-export class LogicGameState {
+export class GameState {
     id: number;
     gameStatus: GameStatus;
     year: number;
@@ -11,7 +11,7 @@ export class LogicGameState {
 
     countries: Country[];
 
-    public constructor(init?:Partial<LogicGameState>) {
+    public constructor(init?:Partial<GameState>) {
         Object.assign(this, init);
     }
 }

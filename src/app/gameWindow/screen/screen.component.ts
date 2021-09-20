@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LogicGameState } from '../_shared/_models/logicGameState';
+import { GameState } from '../_shared/_models/gameState';
 import { GameRenderer } from '../_shared/_renderers/GameRenderer';
 import { WebSocketService } from '../_shared/_services/WebsocketService';
 import { Message } from '../_shared/_models/webModels/Message';
@@ -25,7 +25,7 @@ export class ScreenComponent implements OnInit {
   gameID: string;
   token: string;
 
-  gameState: LogicGameState;
+  gameState: GameState;
 
   @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
 
@@ -144,7 +144,7 @@ export class ScreenComponent implements OnInit {
       switch(received.action){
           case Action.GAMEUPDATE: {
               let gameStateUpdate: GameStateUpdate = new GameStateUpdate(JSON.parse(received.specializedObject));
-              this.receivedGameState(gameStateUpdate.logicGameState);
+              this.receivedGameState(gameStateUpdate.gameState);
               break;
           }
           case Action.CLOSEDGAME: {
@@ -172,11 +172,11 @@ export class ScreenComponent implements OnInit {
   /**
    * 
    * TODO: ADD COMMENTARY
-   * @param logicGameState 
+   * @param gameState 
    * */
-  receivedGameState(logicGameState: LogicGameState){
+  receivedGameState(gameState: GameState){
     try{
-      let recieved =  logicGameState
+      let recieved =  gameState
       this.gameState = recieved;
       console.log(this.gameState);
       this.webSocketAPI.setStatus(this.gameState.gameStatus);

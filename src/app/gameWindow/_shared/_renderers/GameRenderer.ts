@@ -1,7 +1,7 @@
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { Injectable } from "@angular/core";
 import { Loader, Sprite , Application, Graphics } from 'pixi.js'
-import { LogicGameState } from "../_models/logicGameState";
+import { GameState } from "../_models/gameState";
 import { Ship } from '../_models/ship';
 import { CursorKeeper } from "./CursorKeeper";
 
@@ -93,7 +93,7 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
 
 
-    public drawState(state: LogicGameState){
+    public drawState(state: GameState){
         state.countries.forEach( country => {
             let ship = this.shipsContains(country.ship);
 
