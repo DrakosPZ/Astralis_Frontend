@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoginService } from 'src/app/_shared/_services/login/login.service';
+import { LoginService } from 'src/app/lobbyWindow/_shared/_services/login/login.service';
 
 @Component({
   selector: 'app-root',

@@ -1,10 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
-import { findInArray, Game, turnDetailIntoSimple } from 'src/app/_shared/_models/game';
-import { User } from 'src/app/_shared/_models/user';
-import { GameService } from 'src/app/_shared/_services/game/game.service';
-import { LoginService } from 'src/app/_shared/_services/login/login.service';
+import { GameDetail } from 'src/app/lobbyWindow/_shared/_models/details/gameDetail';
+import { findInArray, Game, turnDetailIntoSimple } from 'src/app/lobbyWindow/_shared/_models/game';
+import { User } from 'src/app/lobbyWindow/_shared/_models/user';
+import { GameService } from 'src/app/lobbyWindow/_shared/_services/game/game.service';
+import { LoginService } from 'src/app/lobbyWindow/_shared/_services/login/login.service';
 import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 @Component({

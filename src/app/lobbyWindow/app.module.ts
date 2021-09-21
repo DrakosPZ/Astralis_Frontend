@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './_shared/_navigation/app-routing.module';
+import { AppRoutingModule } from '../_shared/_navigation/app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtTokenInterceptor } from 'src/app/_shared/_interceptors/JwtTokenInterceptor';
-import { ApiInterceptor } from 'src/app/_shared/_interceptors/api-interceptor';
-import { AuthGuard } from './_shared/_navigation/guards/auth-guard.service';
-import { LoginComponent } from './modules/login/login.component';
+import { JwtTokenInterceptor } from 'src/app/_shared/_navigation/presentation/_interceptors/JwtTokenInterceptor';
+import { ApiInterceptor } from 'src/app/_shared/_navigation/presentation/_interceptors/api-interceptor';
+import { AuthGuard } from '../_shared/_navigation/guards/auth-guard.service';
+import { LoginComponent } from './modules/loginRegistration/login/login.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -60,16 +60,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { RegistrationComponent } from './modules/registration/registration.component';
-import { HomeComponent } from './modules/home/home.component';
-import { HeaderComponent } from './_shared/_navigation/presentation/header/header.component';
-import { SidenavListComponent } from './_shared/_navigation/presentation/sidenav-list/sidenav-list.component';
-import { LogInSidenavListComponent } from './_shared/_navigation/play/log-in-sidenav-list/log-in-sidenav-list.component';
-import { LogInHeaderComponent } from './_shared/_navigation/play/log-in-header/log-in-header.component';
+import { HomeComponent } from '../informationWindow/home/home.component';
+
+import { RegistrationComponent } from './modules/loginRegistration/registration/registration.component';
+import { HeaderComponent } from '../_shared/_navigation/presentation/header/header.component';
+import { LogInSidenavListComponent } from '../_shared/_navigation/play/log-in-sidenav-list/log-in-sidenav-list.component';
+import { SidenavListComponent } from '../_shared/_navigation/presentation/sidenav-list/sidenav-list.component';
+import { LogInHeaderComponent } from '../_shared/_navigation/play/log-in-header/log-in-header.component';
 import { GamesComponent } from './modules/games/games.component';
 import { GameInspectionComponent } from './modules/games/_modules/game-inspection/game-inspection.component';
 import { GameEditComponent } from './modules/games/_modules/game-edit/game-edit.component';
-import { ScreenComponent } from '../gameWindow/screen/screen.component';
+
+import { ScreenComponent } from '../gameDisplayWindow/screen/screen.component';
 
 @NgModule({
   declarations: [

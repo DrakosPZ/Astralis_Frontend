@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Game } from 'src/app/_shared/_models/game';
-import { GameService } from 'src/app/_shared/_services/game/game.service';
+import { Game } from 'src/app/lobbyWindow/_shared/_models/game';
+import { GameService } from 'src/app/lobbyWindow/_shared/_services/game/game.service';
 
 @Component({
   selector: 'app-game-edit',

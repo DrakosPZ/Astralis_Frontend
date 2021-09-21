@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GameDetail } from 'src/app/_shared/_models/details/gameDetail';
-import { GameRole } from 'src/app/_shared/_models/gameRole';
-import { UserGameDetail } from 'src/app/_shared/_models/details/userGameDetail';
-import { User } from 'src/app/_shared/_models/user';
+import { GameDetail } from 'src/app/lobbyWindow/_shared/_models/details/gameDetail';
+import { GameRole } from 'src/app/lobbyWindow/_shared/_models/gameRole';
+import { UserGameDetail } from 'src/app/lobbyWindow/_shared/_models/details/userGameDetail';
+import { User } from 'src/app/lobbyWindow/_shared/_models/user';
 import { GameStatus } from 'src/app/_shared/_models/gameStatus';
 
 @Component({
