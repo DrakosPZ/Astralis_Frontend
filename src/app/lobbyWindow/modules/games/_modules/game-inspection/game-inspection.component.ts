@@ -23,6 +23,7 @@ export class GameInspectionComponent implements OnInit {
 
   constructor() { }
 
+  //TODO: Add Documentation
   ngOnInit(): void {
     this.isModerator = this.adminInGame();
     if(this.displayed.status == GameStatus.PAUSED){
@@ -37,6 +38,7 @@ export class GameInspectionComponent implements OnInit {
 
 
   //--------------------Caller Method
+  //TODO: Add Documentation
   getAdmins(): UserGameDetail[]{
     let newList = new Array(); 
     this.displayed.userGameLobbies.forEach(element => {
@@ -47,8 +49,8 @@ export class GameInspectionComponent implements OnInit {
     return newList;
   }
 
+  //TODO: Add Documentation
   checkIfAlreadyIn(): boolean{
-
     //currently the same as the one below, maybe this is supposed to check if they created an empire or such in the game?
     let inGame = false;
     this.displayed.userGameLobbies.forEach(
@@ -62,6 +64,7 @@ export class GameInspectionComponent implements OnInit {
     return true;
   }
 
+  //TODO: Add Documentation
   userInGame(): boolean{
     let inGame = false;
     this.displayed.userGameLobbies.forEach(
@@ -74,6 +77,7 @@ export class GameInspectionComponent implements OnInit {
     return inGame;
   }
 
+  //TODO: Add Documentation
   adminInGame(): boolean{
     let isAdmin = false;
     let admins = this.getAdmins();
@@ -87,6 +91,7 @@ export class GameInspectionComponent implements OnInit {
     return isAdmin;
   }
 
+  //TODO: Add Documentation
   canStartGame(): boolean{
     if(this.displayed.status === GameStatus.UNINITIALIZED || 
        this.displayed.status === GameStatus.CLOSED){
@@ -95,6 +100,7 @@ export class GameInspectionComponent implements OnInit {
     return false;
   }
 
+  //TODO: Add Documentation
   canPauseGame(): boolean{
     if(this.displayed.status === GameStatus.RUNNING || 
        this.displayed.status === GameStatus.PAUSED){
@@ -103,6 +109,7 @@ export class GameInspectionComponent implements OnInit {
     return false;
   }
 
+  //TODO: Add Documentation
   canStoreGame(): boolean{
     if(this.displayed.status === GameStatus.RUNNING || 
        this.displayed.status === GameStatus.PAUSED){
@@ -111,6 +118,7 @@ export class GameInspectionComponent implements OnInit {
     return false;
   }
 
+  //TODO: Add Documentation
   canCloseGame(): boolean{
     if(this.displayed.status === GameStatus.RUNNING|| 
        this.displayed.status === GameStatus.PAUSED){
@@ -119,6 +127,7 @@ export class GameInspectionComponent implements OnInit {
     return false;
   }
 
+  //TODO: Add Documentation
   canLoadGame(): boolean{
     if(this.displayed.status === GameStatus.RUNNING){
       return true;
@@ -126,14 +135,17 @@ export class GameInspectionComponent implements OnInit {
     return false;
   }
 
+  //TODO: Add Documentation
   callStartGame(){
     this.gameSend.emit("start");
   }
 
+  //TODO: Add Documentation
   callSaveGame(){
     this.gameSend.emit("save");
   }
 
+  //TODO: Add Documentation
   callPauseGame(){
     this.gameSend.emit("pause");
     if(this.loadingBText === this.pause){
@@ -143,27 +155,32 @@ export class GameInspectionComponent implements OnInit {
     }
   }
 
+  //TODO: Add Documentation
   callCloseGame(){
     this.gameSend.emit("close");
   }
 
+  //TODO: Add Documentation
   callLoadGame(){
     this.gameSend.emit("load");
   }
 
+  //TODO: Add Documentation
   callCreateCountry(){
     console.error("Game Inspection Component #89: , Creating Country not yet implemented!");
-  
   }
   
+  //TODO: Add Documentation
   callJoinCountry(){
     console.error("Game Inspection Component #89: , Join Country not yet implemented!");
   }
   
+  //TODO: Add Documentation
   callJoinGame(){
     this.gameSend.emit("join");
   }
   
+  //TODO: Add Documentation
   callLeaveGame(){
     this.gameSend.emit("leave");
   }

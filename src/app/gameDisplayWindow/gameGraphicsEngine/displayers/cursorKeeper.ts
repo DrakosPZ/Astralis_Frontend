@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ScreenComponent } from "../../screen/screen.component";
-import { Position } from "../_models/logicModels/position";
+import { Position } from "../../_shared/_models/logicModels/position";
+
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +10,8 @@ import { Position } from "../_models/logicModels/position";
       private posX: number;
       private posY: number;
       private screen: ScreenComponent;
+
+      //TODO: Add Documentation to classes once properly implemented
 
       public setUp(screen: ScreenComponent){
         this.screen = screen;

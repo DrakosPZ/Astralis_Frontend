@@ -17,6 +17,12 @@ export class GameService extends UniversalService{
       super();
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to retrieve a list of all gameLobbies the user joined in.
+   * 
+   * @param identifier The Identifier of the user connected to the game lobbies
+   * @returns An observable with the looked for GameLobbies list if succesfull, otherwhise throws Exception.
+   */
   getJoinedGames(identifier: string): Observable<Game[]>{
     return this.http.get<Game[]>(this.joinedGamesURL() + identifier, this.httpOptions)
     .pipe(
@@ -30,6 +36,12 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to retrieve a game/games based on a looked for name.
+   * 
+   * @param name The text looked for.
+   * @returns An observable with the looked for GameLobbies list if succesfull, otherwhise throws Exception.
+   */
   getSearchName(name: string): Observable<Game[]>{
     return this.http.get<Game[]>(this.searchForNameURL() + name, this.httpOptions)
     .pipe(
@@ -44,6 +56,12 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to retrieve a game/games based on a looked for gamesIdentifier.
+   * 
+   * @param identifier The identifier of the looked for games.
+   * @returns An observable with the looked for GameLobbies list if succesfull, otherwhise throws Exception.
+   */
   getSearchIdentifier(identifier: string): Observable<Game[]>{
     return this.http.get<Game[]>(this.searchForIdentifierURL() + identifier, this.httpOptions)
     .pipe(
@@ -58,6 +76,13 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to retrieve a game with all of the detailed information 
+   * so no further requests for those have to be send out based on a looked for gameIdentifier.
+   * 
+   * @param identifier The identifier of the looked for game.
+   * @returns An observable with the looked for GameLobbyDetail if succesfull, otherwhise throws Exception.
+   */
   getDetailGame(identifier: string): Observable<GameDetail>{
     return this.http.get<GameDetail>(this.searchForDetailIdentifier() + identifier, this.httpOptions)
     .pipe(
@@ -66,6 +91,13 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to join a gameLobby as a user.
+   * 
+   * @param identifierG The identifier of the to be joined game.
+   * @param identifierU The identifier of the to be joined user.
+   * @returns An observable with the joined for GameLobby if succesfull, otherwhise throws Exception.
+   */
   postJoinGame(identifierG: string, identifierU: string): Observable<Game>{
     const body = {};
       body[identifierG] = identifierU;
@@ -76,6 +108,13 @@ export class GameService extends UniversalService{
       );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to leave a gameLobby as a user.
+   * 
+   * @param identifierG The identifier of the to be left game.
+   * @param identifierU The identifier of the to be leaving user.
+   * @returns An observable with the left for GameLobby if succesfull, otherwhise throws Exception.
+   */
   postLeaveGame(identifierG: string, identifierU: string): Observable<Game>{
     const body = {};
       body[identifierG] = identifierU;
@@ -90,6 +129,13 @@ export class GameService extends UniversalService{
 
 
 
+  /**
+   * Generates a HTTP request and sends it to the backend to create a new GameLobby
+   * 
+   * @param game The gameLobby object to be created.
+   * @param identifier The identifier of the user creating the gameLobby.
+   * @returns An observable with the created GameLobby if succesfull, otherwhise throws Exception.
+   */
   startGame(game: Game, identifier: string): Observable<Game[]>{
     const body = 
       new GameUserIDSet({gameLobby: game, userIdentifier: identifier});
@@ -102,6 +148,12 @@ export class GameService extends UniversalService{
 
 
 
+  /**
+   * Generates a HTTP request and sends it to the backend to start the gameLoop in a gameLobby.
+   * 
+   * @param identifier The identifier of the gamelobby to be started.
+   * @returns An observable with the updated GameLobby if succesfull, otherwhise throws Exception.
+   */
   startGameLobby(identifier: string): Observable<GameDetail>{
     return this.http.get<GameDetail>(this.startGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
@@ -110,6 +162,12 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to save the gameLoop in a gameLobby.
+   * 
+   * @param identifier The identifier of the gamelobby to be saved.
+   * @returns An observable with the updated GameLobby if succesfull, otherwhise throws Exception.
+   */
   saveGameLobby(identifier: string): Observable<boolean>{
     return this.http.get<boolean>(this.storeGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
@@ -118,6 +176,12 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to pause the gameLoop in a gameLobby.
+   * 
+   * @param identifier The identifier of the gamelobby to be pauseed.
+   * @returns An observable with the updated GameLobby if succesfull, otherwhise throws Exception.
+   */
   pauseGameLobby(identifier: string): Observable<GameDetail>{
     return this.http.get<GameDetail>(this.pauseGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
@@ -126,6 +190,12 @@ export class GameService extends UniversalService{
     );
   }
 
+  /**
+   * Generates a HTTP request and sends it to the backend to stop the gameLoop in a gameLobby.
+   * 
+   * @param identifier The identifier of the gamelobby to be stopped.
+   * @returns An observable with the updated GameLobby if succesfull, otherwhise throws Exception.
+   */
   stopGameLobby(identifier: string): Observable<GameDetail>{
     return this.http.get<GameDetail>(this.stopGameLobbyIdentifier() + identifier, this.httpOptions)
     .pipe(
@@ -134,10 +204,14 @@ export class GameService extends UniversalService{
     );
   }
 
+
+
+  //TODO: Test if this is still needed? it doesn't show anywhere so remove it?
   forwardOpenLobby(): string{
     return this.openGameLobbyIdentifier();
   }
 
+  //TODO: Test if this is still needed? it doesn't show anywhere so remove it?
   forwardCloseLobby(): string{
     return this.closeGameLobbyIdentifier();
   }

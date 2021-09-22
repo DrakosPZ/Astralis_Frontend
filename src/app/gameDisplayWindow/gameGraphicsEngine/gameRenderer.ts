@@ -1,9 +1,9 @@
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { Injectable } from "@angular/core";
 import { Loader, Sprite , Application, Graphics } from 'pixi.js'
-import { GameState } from "../_models/logicModels/gameState";
-import { Ship } from '../_models/logicModels/ship';
-import { CursorKeeper } from "./CursorKeeper";
+import { GameState } from "../_shared/_models/logicModels/gameState";
+import { Ship } from '../_shared/_models/logicModels/ship';
+import { CursorKeeper } from "./displayers/cursorKeeper";
 
 const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 1000;
@@ -21,6 +21,9 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
     loader = new Loader("assets/_gameAssets/");
     ships: {id, ship}[] = new Array();
+
+    //TODO: Add Documentation to classes once properly implemented
+
 
     public init(
       htmlContainer: any, 

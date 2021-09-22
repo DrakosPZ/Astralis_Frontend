@@ -27,9 +27,17 @@ export class RegistrationComponent implements OnInit {
     this.newUser.role = UserRole.USER;
   }
 
+  /**
+   * Method to contain custom component initialization behaviour
+   */
   ngOnInit(): void {
   }
 
+  /**
+   * Method to forward new registered user object to service for registration.
+   * <br>
+   * Also subscribes to route, when returned user is automatically logged in with login service route. 
+   */
   register(){
     this.userService.registerNewUser(this.newUser)
       .pipe(first()).subscribe(registeredUser => {
@@ -98,6 +106,12 @@ export class RegistrationComponent implements OnInit {
 
 }
 
+/**
+ * Custom function to validate that the text in the password and password repeated field are the same.
+ * 
+ * @param passwordControl the FormControl used for validation
+ * @returns the FormControl containing if value is valid
+ */
 function PasswordRepetitionValidator(passwordControl: FormControl): ValidatorFn {
   return (control: FormControl): { [key: string]: boolean } | null => {
     let passwordRepeat = control.value;

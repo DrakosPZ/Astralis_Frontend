@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameState } from '../_shared/_models/logicModels/gameState';
-import { GameRenderer } from '../_shared/_renderers/GameRenderer';
-import { WebSocketService } from '../websocketAPI/WebsocketService';
+import { GameRenderer } from '../gameGraphicsEngine/gameRenderer';
+import { WebSocketService } from '../websocketAPI/websocketService';
 import { Message } from '../_shared/_models/webModels/Message';
 import { Action } from '../_shared/_models/webModels/action';
 import { Position } from '../_shared/_models/logicModels/position';
 import { Moveship } from '../_shared/_models/webModels/subTypes/moveShip';
 import { MessageSpecialized } from '../_shared/_models/webModels/messageSpecialized';
-import { CursorKeeper } from '../_shared/_renderers/CursorKeeper';
+import { CursorKeeper } from '../gameGraphicsEngine/displayers/cursorKeeper';
 import { GameStateUpdate } from '../_shared/_models/webModels/subTypes/gameStateUpdate';
 
 import { NavbarService } from 'src/app/_shared/_navigation/service/navbar.service';
@@ -28,7 +28,7 @@ export class ScreenComponent implements OnInit {
 
   gameState: GameState;
 
-  @ViewChild('pixiContainer') pixiContainer; // this allows us to reference and load stuff into the div container
+  @ViewChild('pixiContainer') pixiContainer;
 
   //For CleanUp
   paramMapSubscription;
@@ -52,14 +52,20 @@ export class ScreenComponent implements OnInit {
   }
 
   /**
-   * 
-   * TODO: ADD COMMENTARY
+   * Method to supply custom behaviour to angular while component is inititalzed
    */
   ngOnInit(): void {
   }
+
   /**
-   * 
-   * TODO: ADD COMMENTARY
+   * Method to supply custom behaviour to angular after component is inititalzed. 
+   * <br>
+   * This sets up all the received classes to be fully functional.
+   * <ol>
+   *  <li>initialized gameRederer and forwards the requried classes to work</li>
+   *  <li>initialized webSocket and forwards the logged in gameID and token</li>
+   *  <li>subscribes to the webSocket message receiving method, to handle incomming updates</li>
+   * </ol>
    */
   ngAfterViewInit(){
     this.cursorKeeper.setUp(this);
@@ -73,9 +79,9 @@ export class ScreenComponent implements OnInit {
   }
 
   /**
-   * 
-   * TODO: ADD COMMENTARY
-   * TODO: ADD ALL THINGS TO BE CLEANED UP
+   * Method to unsubscribe and clean all in the component done subscriptions, 
+   * also cleaning critical information like IDs and tokens. 
+   * Finally calls websocket to disconnect and cleaningMethod of the graphics engine. 
    */
   ngOnDestroy(): void{
     if(this.paramMapSubscription !== null){
@@ -100,16 +106,14 @@ export class ScreenComponent implements OnInit {
   }
 
   /**
-   * 
-   * TODO: ADD COMMENTARY
+   * Method to start websocket disconnnection process.
    */
   disconnectWebsocket(){
     this.webSocketAPI._disconnect();
   }
 
   /**
-   * 
-   * TODO: ADD COMMENTARY
+   * Method to start clean Up process on the graphics engine
    */
   cleanGraphics(){
     this.gameRenderer.cleanUp();
@@ -117,8 +121,7 @@ export class ScreenComponent implements OnInit {
 
   //WebSocket Local Handling Methods
   /**
-   * 
-   * TODO: ADD COMMENTARY
+   * Method to forward action message to the webSocket
    */
   sendMessage(message: MessageSpecialized){
     //console.log(message)
@@ -134,9 +137,15 @@ export class ScreenComponent implements OnInit {
   }
 
   /**
+   * Method to process received message from the websocket. 
+   * Messages can be
+   * <ul>
+   *  <li>GameUpdate: message contains a GameState supposed to replace old one</li>
+   *  <li>ClosedGame: lobby has been closed and game shouldn't be expecting or sending new updates for the duration.</li>
+   *  <li>Disconnected: because of one reason or another, connecte user has left the game, so game connection is to be terminated</li>
+   * </ul> 
    * 
-   * TODO: ADD COMMENTARY
-   * @param message 
+   * @param message stringified message from the webSocketAPI
    */
   handleMessage(message){
     try{
@@ -171,17 +180,16 @@ export class ScreenComponent implements OnInit {
   }
 
   /**
+   * Method to update the currently loaded gameState and start updating behaviour on the graphics engine.
    * 
-   * TODO: ADD COMMENTARY
-   * @param gameState 
+   * @param gameState the newly received GameState
    * */
   receivedGameState(gameState: GameState){
     try{
-      let recieved =  gameState
-      this.gameState = recieved;
+      this.gameState = gameState;
       console.log(this.gameState);
       this.webSocketAPI.setStatus(this.gameState.gameStatus);
-      this.gameRenderer.drawState(recieved);
+      this.gameRenderer.drawState(this.gameState);
     } catch(e){
       console.error(e);
     }

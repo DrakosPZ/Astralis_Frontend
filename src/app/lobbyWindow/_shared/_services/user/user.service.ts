@@ -19,7 +19,7 @@ export class UserService extends UniversalService{
    * Generates a HTTP request and sends it to the backend to register a new User.
    * 
    * @param newUser The new User.
-   * @returns A observable with the added User if succesfull, otherwhise throws Exception.
+   * @returns An observable with the added User if succesfull, otherwhise throws Exception.
    */
   registerNewUser(newUser: User): Observable<User>{
     //Get Identifiert and push User and identifier to the backend
@@ -34,7 +34,7 @@ export class UserService extends UniversalService{
    * Generates a HTTP request and sends it to the backend to add a new User.
    * 
    * @param newUser The new User.
-   * @returns A observable with the added User if succesfull, otherwhise throws Exception.
+   * @returns An observable with the added User if succesfull, otherwhise throws Exception.
    */
   createNewUser(newUser: User): Observable<User>{
     //Get Identifiert and push User and identifier to the backend
@@ -49,7 +49,7 @@ export class UserService extends UniversalService{
    * Generates a HTTP request and sends it to the backend to edit a User.
    * 
    * @param user The edited User.
-   * @returns A observable with the edited User if succesfull, otherwhise throws Exception.
+   * @returns An observable with the edited User if succesfull, otherwhise throws Exception.
    */
   editUser(user: User): Observable<User>{
     //Get Identifiert and push User and identifier to the backend
@@ -63,7 +63,7 @@ export class UserService extends UniversalService{
    * Generates a HTTP request and sends it to the backend to delete a User.
    * 
    * @param user The to be deleted User.
-   * @returns A observable with the deleted User if succesfull, otherwhise throws Exception.
+   * @returns An observable with the deleted User if succesfull, otherwhise throws Exception.
    */
   deleteUser(identifier: string): Observable<User>{
     return this.http.delete<User>(this.deleteUserURL()+identifier, this.httpOptions).pipe(
@@ -76,7 +76,7 @@ export class UserService extends UniversalService{
    * Generates a HTTP request and sends it to the backend to find the User with the according identifier.
    * 
    * @param identifier The Identifier of which the according User should be found.
-   * @returns A observable with the looked for User if succesfull, otherwhise throws Exception.
+   * @returns An observable with the looked for User if succesfull, otherwhise throws Exception.
    */
   findUserByIdentifier(identifier: string): Observable<User>{
     return this.http.get<User>(this.userByIdentifierURL()+identifier, this.httpOptions).pipe(

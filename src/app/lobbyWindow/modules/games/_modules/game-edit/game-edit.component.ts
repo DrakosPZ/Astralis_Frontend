@@ -16,6 +16,9 @@ export class GameEditComponent implements OnInit {
 
   constructor(private gameService: GameService) { }
 
+  /**
+   * Method to contain custom component initialization behaviour
+   */
   ngOnInit(): void {
   }
   //--------------------Data Setup
@@ -24,6 +27,10 @@ export class GameEditComponent implements OnInit {
 
 
   //--------------------Caller Method
+  /**
+   * Checks if all FormControls are valid.
+   * @returns true if all formcontrols have no Errors
+   */
   allFilled(){
     if(this.gameName.hasError('required') || 
        this.description.hasError('required')){
@@ -32,12 +39,20 @@ export class GameEditComponent implements OnInit {
     return true;
   }
   
+  /**
+   * Checks if gameName Input has an Error, if so it returns an error message.
+   * @returns error Message as string
+   */
   getErrorMessageGameName() {
     if (this.gameName.hasError('required')) {
       return 'You must enter a value';
     }
   }
   
+  /**
+   * Checks if description Input has an Error, if so it returns an error message.
+   * @returns error Message as string
+   */
   getErrorMessageDescription() {
     if (this.description.hasError('required')) {
       return 'You must enter a value';
@@ -49,10 +64,16 @@ export class GameEditComponent implements OnInit {
 
 
   //--------------------Caller Method
+  /**
+   * Method to emit resetGameFlag to games component.
+   */
   prepNewGame(){
     this.gameSend.emit("resetGame");
   }
   
+  /**
+   * Method to emit createGameFlag to games component.
+   */
   startNewGame(){
     this.gameSend.emit("createGame");
   }

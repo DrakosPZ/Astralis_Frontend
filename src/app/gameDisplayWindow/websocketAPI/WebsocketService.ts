@@ -27,9 +27,10 @@ export class WebSocketService {
     constructor(){}
 
     /**
-     * TODO: ADD COMMENTARY
+     * Method used to start initialization process and storing data used for the connection.
      * 
-     * @param gameID 
+     * @param gameID gameId to which the socket should connect to.
+     * @param userToken JWT token got when user logged in, used to authenticate connection with the server.
      */
     _setUp(gameID: string, userToken: string){
 
@@ -42,7 +43,7 @@ export class WebSocketService {
     }
 
     /**
-     * TODO: ADD COMMENTARY
+     * Method to setup connection information,  as for exmple setting the custom header.
      */
     _configure(){
 
@@ -74,8 +75,11 @@ export class WebSocketService {
     }
 
     /**
-     * 
-     * TODO: ADD COMMENTARY
+     * Method to specify behaviour on successfull connection.
+     * <ul>
+     *  <li>sets subscription to receiving Endpoint.</li>
+     *  <li>sets on Error behaviour.</li>
+     * </ul>
      */
     _connect() {
         
@@ -98,8 +102,7 @@ export class WebSocketService {
     };
     
     /**
-    * 
-    * TODO: ADD COMMENTARY
+    * Method to unsubscribe from all subscriptions, deleting connection data as well as deactivating the used Stomp Client.
     */
     _disconnect() {
         if (this.stompClient !== null) {
@@ -122,8 +125,7 @@ export class WebSocketService {
 
     
     /**
-    * 
-    * TODO: ADD COMMENTARY
+    * Method contains onError behaviour.
     */
     // on error, schedule a reconnection attempt
     _onError() {
@@ -131,8 +133,8 @@ export class WebSocketService {
     }
 
 	/**
-	 * Send message to sever via web socket
-	 * @param {*} message 
+	 * Send message to sever via web socket, messages are only send when GameStatus is on RUNNING.
+	 * @param {*} message message to be send to websocket.
 	 */
     _send(message) {
         //console.log("calling logout api via web socket: " + message);
@@ -145,10 +147,11 @@ export class WebSocketService {
     }
 
     /**
+    * Method contains onMessageReceived behaviour.
+    * Forwards message String to screen component interpretar.
     * 
-    * TODO: ADD COMMENTARY
-    * @param message 
-    * @returns 
+    * @param message the stringified socket message.
+    * @returns a nudge to the subscription on the screen component side, containing the message.
     */
     onMessageReceived(message): Observable<string> {
         //console.log("Message Recieved from Server :: " + message);
@@ -157,8 +160,9 @@ export class WebSocketService {
     }
 
     /**
-     * TODO Add documentation
-     * @param status 
+     * Setter for the websockets GameStatus.
+     * 
+     * @param status to be set status.
      */
     setStatus(status: GameStatus){
         this.status = status;

@@ -44,6 +44,9 @@ export class GamesComponent implements OnInit {
     this.searchInput = "";
    }
 
+  /**
+   * Method to contain custom component initialization behaviour
+   */
   ngOnInit(): void {
   }
 
@@ -61,6 +64,7 @@ export class GamesComponent implements OnInit {
       });
   }
 
+  //TODO: Add Documentation
   replaceGameInArrays(newer: Game){
     if(this.joinedGames){
       let index = findInArray(newer, this.joinedGames);
@@ -72,6 +76,7 @@ export class GamesComponent implements OnInit {
     }
   }
 
+  //TODO: Add Documentation
   reloadArrays(inspect: boolean){
     if(inspect){
       this.callForJoinedGames();
@@ -88,6 +93,7 @@ export class GamesComponent implements OnInit {
 
 
   //--------------------Mat Tab Method
+  //TODO: Add Documentation
   checkForTab(event){
     switch (event.index) {
       case 0:
@@ -107,22 +113,27 @@ export class GamesComponent implements OnInit {
 
 
   //--------------------Caller Method
+  //TODO: Add Documentation
   callForJoinedGames(){
     this.getJoinedGames(this.currentUser.identifier)
   }
 
+  //TODO: Add Documentation
   inspectGame(clickedGame: Game){
     this.getDetailGame(clickedGame.identifier, true)
   }
 
+  //TODO: Add Documentation
   inspectSearchedGame(clickedGame: Game){
     this.getDetailGame(clickedGame.identifier, false)
   }
 
+  //TODO: Add Documentation
   search(){
     this.getSearchedGamesName(this.searchInput);
   }
 
+  //TODO: Add Documentation
   userInGame(pickedGame: Game): boolean{
     let inGame = false;
     pickedGame.userGameLobbies.forEach(
@@ -135,30 +146,37 @@ export class GamesComponent implements OnInit {
     return inGame;
   }
   
+  //TODO: Add Documentation
   callJoinGame(clickedGame: Game, inspect: boolean){
     this.joinGame(clickedGame.identifier, this.currentUser.identifier, inspect);
   }
   
+  //TODO: Add Documentation
   callLeaveGame(clickedGame: Game, inspect: boolean){
     this.leaveGame(clickedGame.identifier, this.currentUser.identifier, inspect);
   }
 
+  //TODO: Add Documentation
   callStartGame(clickedGame: Game, inspect: boolean){
     this.startGame(clickedGame.identifier, inspect);
   }
 
+  //TODO: Add Documentation
   callSaveGame(clickedGame: Game, inspect: boolean){
     this.saveGame(clickedGame.identifier, inspect);
   }
 
+  //TODO: Add Documentation
   callPauseGame(clickedGame: Game, inspect: boolean){
     this.pauseGame(clickedGame.identifier, inspect);
   }
 
+  //TODO: Add Documentation
   callCloseGame(clickedGame: Game, inspect: boolean){
     this.stopGame(clickedGame.identifier, inspect);
   }
 
+  //TODO: Add Documentation
   calledByEditScreen(text: String){
     switch (text) {
       case "resetGame":
@@ -170,6 +188,7 @@ export class GamesComponent implements OnInit {
     }
   }
 
+  //TODO: Add Documentation
   calledByDetailScreen(text: String, inspect: boolean){
     let useddetailGame: Game;
     if(inspect){
@@ -203,15 +222,18 @@ export class GamesComponent implements OnInit {
     }
   }
 
+  //TODO: Add Documentation
   prepNewGame(){
     this.newGame = new Game();
     this.newGame.status = GameStatus.UNINITIALIZED;
   }
   
+  //TODO: Add Documentation
   startNewGame(){
     this.postNewGame(this.newGame);
   }
 
+  //TODO: Add Documentation
   openGamePopout(game: Game) {
     window.open("Game/" + this.currentUser.identifier + "&" + game.identifier + "&" + this.removeBearerFromToken(this.loginService.getToken()), "_blank")
   }
@@ -223,6 +245,7 @@ export class GamesComponent implements OnInit {
   
 
   //--------------------Service Methods
+  //TODO: Add Documentation
   getJoinedGames(uIdentifier: string){
     this.gameService.getJoinedGames(uIdentifier)
           .pipe(first()).subscribe(games =>  {
@@ -233,6 +256,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   getDetailGame(clickedGameIdentifier: string, inspect: boolean){
     this.gameService.getDetailGame(clickedGameIdentifier)
           .pipe(first()).subscribe(game =>  {
@@ -247,6 +271,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   getSearchedGamesName(name: String){
     this.gameService.getSearchName(name.toString())
           .pipe(first()).subscribe(games =>  {
@@ -257,6 +282,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   getSearchedGamesIdentifier(identifier: String){
     this.gameService.getSearchIdentifier(identifier.toString())
           .pipe(first()).subscribe(games =>  {
@@ -267,6 +293,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   joinGame(identifierG: String, identifierU: String, inspect: boolean){
     this.gameService.postJoinGame(identifierG.toString(), 
                                   identifierU.toString())
@@ -280,6 +307,7 @@ export class GamesComponent implements OnInit {
             });
   }
 
+  //TODO: Add Documentation
   leaveGame(identifierG: String, identifierU: String, inspect: boolean){
     this.gameService.postLeaveGame(identifierG.toString(), 
                                    identifierU.toString())
@@ -293,6 +321,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   startGame(identifier: String, inspect: boolean){
     this.gameService.startGameLobby(identifier.toString())
           .pipe(first()).subscribe(game => {
@@ -304,6 +333,7 @@ export class GamesComponent implements OnInit {
           });
   }
 
+  //TODO: Add Documentation
   saveGame(identifier: String, inspect: boolean){
     this.gameService.saveGameLobby(identifier.toString())
     .pipe(first()).subscribe(returned => {
@@ -312,6 +342,7 @@ export class GamesComponent implements OnInit {
     });
   }
 
+  //TODO: Add Documentation
   pauseGame(identifier: String, inspect: boolean){
     this.gameService.pauseGameLobby(identifier.toString())
     .pipe(first()).subscribe(game => {
@@ -323,6 +354,7 @@ export class GamesComponent implements OnInit {
     });
   }
 
+  //TODO: Add Documentation
   stopGame(identifier: String, inspect: boolean){
     this.gameService.stopGameLobby(identifier.toString())
     .pipe(first()).subscribe(game => {
@@ -334,11 +366,13 @@ export class GamesComponent implements OnInit {
     });
   }
 
+  //TODO: Add Documentation
   postNewGame(newGame: Game){
     this.gameService.startGame(newGame, this.currentUser.identifier)
           .pipe(first()).subscribe(games =>  this.joinedGames = games);
   }
 
+  //TODO: Add Documentation
   removeBearerFromToken(rawText: string): string{
     return rawText.substr(rawText.indexOf(" ") + 1);
   }

@@ -15,14 +15,25 @@ export class AppComponent {
   constructor(private loginService: LoginService) {
   }
 
+  /**
+   * Method containing custom cleanup behaviour
+   */
   ngOnDestroy(): void {
     this.viewportMobileQuery.removeEventListener('change', this._viewportQueryListener);
   }
 
+  /**
+   * Method requesting of loginService if currently logged in and forwarding results to html.
+   * 
+   * @returns if user logged in == true
+   */
   isLoggedIn(): boolean{
     return this.loginService.isLoggedIn();
   }
 
+  /**
+  * Method to call loginService to log user out.  
+  */
   logUserOut(){
     this.loginService.logout();
   }
