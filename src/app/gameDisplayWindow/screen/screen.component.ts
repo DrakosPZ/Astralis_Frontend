@@ -69,7 +69,7 @@ export class ScreenComponent implements OnInit {
    */
   ngAfterViewInit(){
     this.cursorKeeper.setUp(this);
-    this.gameRenderer.init(this.pixiContainer, this.cursorKeeper);
+    this.gameRenderer.init(this.pixiContainer, this.cursorKeeper, this);
     this.webSocketAPI._setUp(this.gameID, this.token);
     this.onMessageReceivedSubscription =
                 this.webSocketAPI.onMessageReceived("")
@@ -103,6 +103,13 @@ export class ScreenComponent implements OnInit {
     }
     this.disconnectWebsocket();
     this.cleanGraphics();
+  }
+
+  /**
+   * Method to return the currently stored GameState
+   */
+  getCurrentGameState(){
+    return this.gameState;
   }
 
   /**
@@ -144,6 +151,8 @@ export class ScreenComponent implements OnInit {
    *  <li>ClosedGame: lobby has been closed and game shouldn't be expecting or sending new updates for the duration.</li>
    *  <li>Disconnected: because of one reason or another, connecte user has left the game, so game connection is to be terminated</li>
    * </ul> 
+   * 
+   * Maybe put this message decipherer into its own class? Could then call a callback that's being provided here and links it up to the rest of the structure?
    * 
    * @param message stringified message from the webSocketAPI
    */
@@ -187,9 +196,9 @@ export class ScreenComponent implements OnInit {
   receivedGameState(gameState: GameState){
     try{
       this.gameState = gameState;
-      console.log(this.gameState);
       this.webSocketAPI.setStatus(this.gameState.gameStatus);
-      this.gameRenderer.drawState(this.gameState);
+      // this.gameRenderer.drawState(this.gameState);
+      this.gameRenderer.gameStateChanged();
     } catch(e){
       console.error(e);
     }

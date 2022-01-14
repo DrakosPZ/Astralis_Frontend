@@ -1,9 +1,11 @@
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import { Injectable } from "@angular/core";
 import { Loader, Sprite , Application, Graphics } from 'pixi.js'
+import { ScreenComponent } from "../screen/screen.component";
 import { GameState } from "../_shared/_models/logicModels/gameState";
 import { Ship } from '../_shared/_models/logicModels/ship';
 import { CursorKeeper } from "./displayers/cursorKeeper";
+import { decipherGameState } from "./utils/gameStateDecipherer";
 
 const VIEW_WIDTH = 1000;
 const VIEW_HEIGHT = 1000;
@@ -16,8 +18,12 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
     providedIn: 'root'
   })
   export class GameRenderer{
+    private screenRefrence: ScreenComponent;
+
     private pApp: any;
     private cursor: CursorKeeper;
+
+    private displayedGameState: GameState;
 
     loader = new Loader("assets/_gameAssets/");
     ships: {id, ship}[] = new Array();
@@ -27,8 +33,10 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
     public init(
       htmlContainer: any, 
-      cursorKeeper: CursorKeeper
+      cursorKeeper: CursorKeeper,
+      screenRefrence: ScreenComponent
                                 ): Application{
+        this.screenRefrence = screenRefrence;
         this.cursor = cursorKeeper;
         this.pApp = new Application({ 
           width: VIEW_WIDTH, height: VIEW_HEIGHT 
@@ -94,6 +102,10 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
       this.pApp.destroy(true, true);
     }
 
+    public getDisplayedGameState(): GameState{
+      return this.displayedGameState;
+    }
+
 
 
     public drawState(state: GameState){
@@ -135,4 +147,32 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
         return ship;
     }
     
+
+
+
+    // UPDATED GAME DISPLAY LOGIC GOES DOWN HERE
+
+    /**
+     * Method to call all steps required to update the GameState: 
+     * 1: fetch game State from screen
+     * 2: check GS against contianings Player's knowledge list to generate PKGS (PlayerKnownGameState)
+     * 3: check PKGS against already stored displayGS and adjust values to new ones 
+     */
+    public gameStateChanged(){
+      const gameState = this.screenRefrence.getCurrentGameState();
+      const pkgs = decipherGameState(gameState);
+      this.updateGameState(pkgs);
+    }
+
+    /**
+     * Method to cycle through the DisplayedGameState and replace the underlying gameState without removing the animation specific alterations.
+     * Maybe later also allow for ship movement animatiosn  to be not cut off from game Updates.
+     * 
+     * @param newGameState 
+     */
+    private updateGameState(newGameState: GameState){
+      this.displayedGameState = newGameState;
+      //put this part into Game Drawer and generalize it so it checks displayed Frame and only loads segments that are visible.
+      this.drawState(this.displayedGameState);
+    }
   }
