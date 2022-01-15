@@ -5,28 +5,32 @@ import { ScreenComponent } from "../screen/screen.component";
 import { GameState } from "../_shared/_models/logicModels/gameState";
 import { Ship } from '../_shared/_models/logicModels/ship';
 import { CursorKeeper } from "./displayers/cursorKeeper";
+import { ViewHandler } from "./displayers/viewHandler";
+import { DrawerClassManager } from "./drawers/_drawerClassManager";
 import { decipherGameState } from "./utils/gameStateDecipherer";
 
-const VIEW_WIDTH = 1000;
-const VIEW_HEIGHT = 1000;
+export const VIEW_WIDTH = 1000;
+export const VIEW_HEIGHT = 1000;
 //Everything going from the frontend to backend has to be corrected -
 //Everything going from the backend to frontend has to be corrected +
-const F2B_CORRECTION_W = VIEW_WIDTH / 2;
-const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
+export const F2B_CORRECTION_W = VIEW_WIDTH / 2;
+export const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
 @Injectable({
     providedIn: 'root'
   })
   export class GameRenderer{
     private screenRefrence: ScreenComponent;
+    drawerClassManager: DrawerClassManager;
+    viewHandler: ViewHandler;
 
-    private pApp: any;
-    private cursor: CursorKeeper;
+    pApp: any;
+    cursor: CursorKeeper;
 
-    private displayedGameState: GameState;
+    displayedGameState: GameState;
 
     loader = new Loader("assets/_gameAssets/");
-    ships: {id, ship}[] = new Array();
+    shipSprites: {id, ship}[] = new Array();
 
     //TODO: Add Documentation to classes once properly implemented
 
@@ -51,6 +55,11 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
         }
         this.stageSetup();
         this.initMouseInteraction();
+
+        this.drawerClassManager = new DrawerClassManager(this);
+        this.viewHandler = new ViewHandler();
+
+        this.pApp.ticker.add(this.drawerClassManager.drawState());
         return this.pApp;
     }
 
@@ -124,12 +133,12 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
 
     private shipsContains(stateShip: Ship){
         let ship;
-        for(let i = 0; i < this.ships.length; i++){
+        for(let i = 0; i < this.shipSprites.length; i++){
             //console.log("check if present");
             //console.log(this.ships[i]);
             //console.log(stateShip);
-            if(this.ships[i].id === stateShip.id){
-              ship = this.ships[i].ship;
+            if(this.shipSprites[i].id === stateShip.id){
+              ship = this.shipSprites[i].ship;
               break;
             }
           }
@@ -137,14 +146,14 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
     }
 
     private addNewShipSprite(stateShip: Ship){
-        let ship = new Sprite(this.loader.resources["prototypeShip.png"].texture);
-        ship.anchor.x = 0.5;
-        ship.anchor.y = 0.5;
-        this.ships.push({
+        let shipSprite = new Sprite(this.loader.resources["prototypeShip.png"].texture);
+        shipSprite.anchor.x = 0.5;
+        shipSprite.anchor.y = 0.5;
+        this.shipSprites.push({
             id: stateShip.id, 
-            ship: ship
+            ship: shipSprite
             })
-        return ship;
+        return shipSprite;
     }
     
 
@@ -173,6 +182,6 @@ const F2B_CORRECTION_H = VIEW_HEIGHT / 2;
     private updateGameState(newGameState: GameState){
       this.displayedGameState = newGameState;
       //put this part into Game Drawer and generalize it so it checks displayed Frame and only loads segments that are visible.
-      this.drawState(this.displayedGameState);
+      // this.drawState(this.displayedGameState);
     }
   }
